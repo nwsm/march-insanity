@@ -4,6 +4,7 @@
     "description": "",
     "scripts": {
       "heroku-postbuild": "npm run build-client && npm run install-server",
+      "buildAndStart" : "npm run build-client && npm run start",
       "start": "node server/src/app.js",
       "build-client": "cd ./client && npm install && npm run build",
       "install-server": "cd ./server && npm install"
