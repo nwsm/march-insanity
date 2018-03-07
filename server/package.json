@@ -9,6 +9,7 @@
   "author": "Eric Newsom, Luke Seidl",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.16.2"
+    "express": "^4.16.2",
+    "cors": "^2.8.4"
   }
 }
