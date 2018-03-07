@@ -20,7 +20,7 @@ If we look at app.js we see it mainly, right now, serves up the static files fro
 Eventually though, this will have API endpoints for our frontend to call and will connect to the database.
 
 ## Clientside
-Looking in the client directory we have out front end. The server actually sends up the compressed version in dist, but the pretty version where we develop is in src.
+Looking in the client directory we have our front end. The server actually sends up the compressed version in dist, but the pretty version where we develop is in src.
 
 The entry point is main.js, and we see that it creates a new Vue instance. The Vue instance uses a router, located in /router, and a component called App.
 
