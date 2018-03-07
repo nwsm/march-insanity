@@ -23,7 +23,7 @@ From the root march-insanity directory (which has client and server in it) run:
 
 The app will now be running at http://localhost:8081/#/
 
-To develop, stop the server, make changes, run those three commands again.
+To develop, stop the server, make changes, run buildAndStart again.
 
 This is an annoying process because building takes a while. Building is only necessary when running BOTH the server and the client.
 
