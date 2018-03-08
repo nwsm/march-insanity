@@ -280,13 +280,83 @@ app.put('/GAMES', function (req, res) {
 
  //BRACKETS
  //INSERT
-
+ app.post('/BRACKETS', function (req, res) {
+    var params  = req.body;
+    console.log(params);
+    connection.query('INSERT INTO BRACKETS SET ?', params, function (error, results, fields) {
+       if (error) throw error;
+       res.end(JSON.stringify(results));
+       console.log('Created new brackets');
+     });
+ });
  //SELECT ALL
+ app.get('/BRACKETS/', function (req, res) {
+    connection.query('select * from BRACKETS', [req.params.id], function (error, results, fields) {
+        if (error) throw error;
+        res.end(JSON.stringify(results));
+        console.log('Request for all brackets');
+    });
+});
 
  //SELECT BY ID
+ app.get('/BRACKETS/:id', function (req, res) {
+    connection.query('select * from BRACKETS where bracketID=?', [req.params.id], function (error, results, fields) {
+        if (error) throw error;
+        res.end(JSON.stringify(results));
+        console.log('Request for single bracket');
+    });
+});
 
  //UPDATE
-
+ app.put('/BRACKETS', function (req, res) {
+    connection.query('UPDATE `BRACKETS` SET `Winner1`=?, `Winner2`=?, `Winner3`=?, `Winner4`=?,\
+                     `Winner5`=?, `Winner6`=?, `Winner7`=?, `Winner8`=?,\
+                     `Winner9`=?, `Winner10`=?, `Winner11`=?, `Winner12`=?,\
+                     `Winner13`=?, `Winner14`=?, `Winner15`=?, `Winner16`=?,\
+                     `Winner17`=?, `Winner18`=?, `Winner19`=?, `Winner20`=?,\
+                     `Winner21`=?, `Winner22`=?, `Winner23`=?, `Winner24`=?,\
+                     `Winner25`=?, `Winner26`=?, `Winner27`=?, `Winner28`=?,\
+                     `Winner29`=?, `Winner30`=?, `Winner31`=?, `Winner32`=?,\
+                     `Winner33`=?, `Winner34`=?, `Winner35`=?, `Winner36`=?,\
+                     `Winner37`=?, `Winner38`=?, `Winner39`=?, `Winner40`=?,\
+                     `Winner41`=?, `Winner42`=?, `Winner43`=?, `Winner44`=?,\
+                     `Winner45`=?, `Winner46`=?, `Winner47`=?, `Winner48`=?,\
+                     `Winner49`=?, `Winner50`=?, `Winner51`=?, `Winner52`=?,\
+                     `Winner53`=?, `Winner54`=?, `Winner55`=?, `Winner56`=?,\
+                     `Winner57`=?, `Winner58`=?, `Winner59`=?, `Winner60`=?,\
+                     `Winner61`=?, `Winner62`=?, `Winner63`=?, `bracketType`=?\
+                     where `bracketID`=?',
+                     [req.body.Winner1, req.body.Winner2, req.body.Winner3, req.body.Winner4,
+                      req.body.Winner5, req.body.Winner6, req.body.Winner7, req.body.Winner8,
+                      req.body.Winner9, req.body.Winner10, req.body.Winner11, req.body.Winner12,
+                      req.body.Winner13, req.body.Winner14, req.body.Winner15, req.body.Winner16,
+                      req.body.Winner17, req.body.Winner18, req.body.Winner19, req.body.Winner20,
+                      req.body.Winner21, req.body.Winner22, req.body.Winner23, req.body.Winner24,
+                      req.body.Winner25, req.body.Winner26, req.body.Winner27, req.body.Winner28,
+                      req.body.Winner29, req.body.Winner30, req.body.Winner31, req.body.Winner32,
+                      req.body.Winner33, req.body.Winner34, req.body.Winner35, req.body.Winner35,
+                      req.body.Winner37, req.body.Winner38, req.body.Winner39, req.body.Winner40,
+                      req.body.Winner41, req.body.Winner42, req.body.Winner43, req.body.Winner44,
+                      req.body.Winner45, req.body.Winner46, req.body.Winner47, req.body.Winner48,
+                      req.body.Winner49, req.body.Winner50, req.body.Winner51, req.body.Winner52,
+                      req.body.Winner53, req.body.Winner54, req.body.Winner55, req.body.Winner56,
+                      req.body.Winner57, req.body.Winner58, req.body.Winner59, req.body.Winner60,
+                      req.body.Winner61, req.body.Winner62, req.body.Winner63,
+                      req.body.bracketType,req.body.bracketID], 
+                     function (error, results, fields) {
+       if (error) throw error;
+       res.end(JSON.stringify(results));
+       console.log('Bracket updated');
+     });
+ });
+ 
  //DELETE
+ app.delete('/BRACKETS', function (req, res) {
+    console.log(req.body);
+    connection.query('DELETE FROM `BRACKETS` WHERE `bracketID`=?', [req.body.bracketID], function (error, results, fields) {
+       if (error) throw error;
+       res.end('bracket has been deleted!');
+     });
+ });
 
  
