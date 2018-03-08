@@ -52,6 +52,8 @@ export default {
   methods: {
     googleSignInSuccess (googleUser) {
       const profile = googleUser.getBasicProfile() // etc etc
+      console.log(googleUser)
+      console.log(profile)
       this.$store.state.loggedIn = true
       this.$store.state.signinProvider = 'Google'
       this.$store.state.name = profile.ig
