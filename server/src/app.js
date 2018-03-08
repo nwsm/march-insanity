@@ -22,6 +22,7 @@ connection.connect((error) => {
       }
       console.log('Connection established');
   });
+//app.listen(config.port,'localhost')
 app.listen(config.port)
 console.log(`Server started on port ${config.port}`)
 
@@ -65,22 +66,21 @@ app.get('/USERS', function (req, res) {
     });
 });
 
-//SELECT BY ID
+//SELECT BY ID 
 app.get('/USERS/:id', function (req, res) {
     connection.query('select * from USERS where userID=?', [req.params.id], function (error, results, fields) {
         if (error) throw error;
         res.end(JSON.stringify(results));
-        console.log('Request for single user');
+        console.log('Request for single user by id');
     });
 });
 
 //UPDATE
 app.put('/USERS', function (req, res) {
-    connection.query('UPDATE `USERS` SET `name`=?,`bracket1`=?, `bracket2`=?, `bracket3`=?,\
-                     `bracket4`=?, `bracket5`=?, `bracket6`=?,`email`=?,`score`=? where `userID`=?',
-                     [req.body.name,req.body.bracket1, req.body.bracket2, req.body.bracket3, req.body.bracket4, 
-                     req.body.bracket5, req.body.bracket6, req.body.email, req.body.score, req.body.userID], 
-                     function (error, results, fields) {
+    connection.query('UPDATE `USERS` SET `name`=?,`bracketCollection1`=?, `bracketCollection2`=?, `bracketCollection3`=?,\
+                     `email`=? where `userID`=?',
+                     [req.body.name,req.body.bracketCollection1, req.body.bracketCollection2, req.body.bracketCollection3, 
+                      req.body.email, req.body.userID], function (error, results, fields) {
        if (error) throw error;
        res.end(JSON.stringify(results));
        console.log('user updated');
@@ -195,6 +195,7 @@ app.delete('/GROUPS/', function (req, res) {
        console.log('Created new game');
      });
  });
+
  //SELECT BY ID
  app.get('/GAMES/:id', function (req, res) {
     connection.query('select * from GAMES where gameID=?', [req.params.id], function (error, results, fields) {
@@ -223,6 +224,59 @@ app.put('/GAMES', function (req, res) {
        console.log('group updated');
      });
  });
+
+ //BRACKETCOLLECTIONS
+ //INSERT
+ app.post('/BRACKETCOLLECTIONS', function (req, res) {
+    var params  = req.body;
+    console.log(params);
+    connection.query('INSERT INTO BRACKETCOLLECTIONS SET ?', params, function (error, results, fields) {
+       if (error) throw error;
+       res.end(JSON.stringify(results));
+       console.log('Created new bracket collection');
+     });
+ });
+
+ //SELECT ALL
+ app.get('/BRACKETCOLLECTIONS/', function (req, res) {
+    connection.query('select * from BRACKETCOLLECTIONS', [req.params.id], function (error, results, fields) {
+        if (error) throw error;
+        res.end(JSON.stringify(results));
+        console.log('Request for all collections');
+    });
+});
+
+ //SELECT BY ID
+ app.get('/BRACKETCOLLECTIONS/:id', function (req, res) {
+    connection.query('select * from BRACKETCOLLECTIONS where CollectionID=?', [req.params.id], function (error, results, fields) {
+        if (error) throw error;
+        res.end(JSON.stringify(results));
+        console.log('Request for single collection');
+    });
+}); 
+
+ //UPDATE
+ app.put('/BRACKETCOLLECTIONS', function (req, res) {
+    connection.query('UPDATE `BRACKETCOLLECTIONS` SET `Bracket1ID`=?, `Bracket2ID`=?,`Bracket3ID`=?, `Bracket4ID`=?,\
+                     `Bracket5ID`=?, `Bracket6ID`=?, `score`=? where `CollectionID`=?',
+                     [req.body.Bracket1ID, req.body.Bracket2ID, req.body.Bracket3ID, req.body.Bracket4ID, req.body.Bracket5ID, 
+                      req.body.Bracket6ID, req.body.score, req.body.CollectionID], 
+                     function (error, results, fields) {
+       if (error) throw error;
+       res.end(JSON.stringify(results));
+       console.log('Collection updated');
+     });
+ });
+
+ //DELETE
+ app.delete('/BRACKETCOLLECTIONS', function (req, res) {
+    console.log(req.body);
+    connection.query('DELETE FROM `BRACKETCOLLECTIONS` WHERE `CollectionID`=?', [req.body.CollectionID], function (error, results, fields) {
+       if (error) throw error;
+       res.end('Collection has been deleted!');
+     });
+ });
+
 
  //BRACKETS
  //INSERT
