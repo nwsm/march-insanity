@@ -1,17 +1,16 @@
 <template>
   <div>
     <h1>{{ msg }}</h1>
-      <p>Links to all groups the user is in will be below:</p>
-      <router-link to="/Group">group</router-link>
+      <router-link to="/">Main</router-link>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Main',
+  name: 'Brackets',
   data () {
     return {
-      msg: 'Main Page'
+      msg: 'This page will show all of your brackets!'
     }
   }
 }

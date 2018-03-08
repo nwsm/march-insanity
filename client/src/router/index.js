@@ -1,12 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Main from '@/components/Main'
-import Group from '@/components/Group'
-import Vuetify from 'vuetify'
-import 'vuetify/dist/vuetify.min.css'
+import Main from '../pages/Main'
+import Groups from '../pages/Groups'
+import Brackets from '../pages/Brackets'
 
 Vue.use(Router)
-Vue.use(Vuetify)
 
 export default new Router({
   routes: [
@@ -16,9 +14,14 @@ export default new Router({
       component: Main
     },
     {
-      path: '/Group',
-      name: 'Group',
-      component: Group
+      path: '/Groups',
+      name: 'Groups',
+      component: Groups
+    },
+    {
+      path: '/Brackets',
+      name: 'Brackets',
+      component: Brackets
     }
   ]
 })

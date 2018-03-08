@@ -1,16 +1,17 @@
 <template>
   <div>
-    <h1>{{ msg }}</h1>
-      <router-link to="/">Main</router-link>
+    <b-jumbotron header="March Insanity" lead="A New Type of NCAA Bracket Challenge">
+      <b-btn>How It Works</b-btn>
+    </b-jumbotron>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Group',
+  name: 'hello',
   data () {
     return {
-      msg: 'This page will show info about one group'
+
     }
   }
 }

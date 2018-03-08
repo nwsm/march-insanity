@@ -1,16 +1,31 @@
 <template>
   <div id="app">
-    <router-view>
+    <navbar></navbar>
+    <hello v-if="$route.name=='Main' || !$store.state.loggedIn"></hello>
+    <router-view v-if="$store.state.loggedIn">
     </router-view>
+    <div v-else>
+      Sign in through Google or Facebook to get started!
+    </div>
+
   </div>
 </template>
 
 <script>
+import Navbar from './components/Navbar.vue'
+import Hello from './components/Hello.vue'
+/* eslint-disable */
 export default {
   name: 'App',
   data: () => ({
-    drawer: false
-  })
+
+  }),
+  methods: {
+  },
+  components: {
+    Navbar,
+    Hello
+  }
 }
 </script>
 
@@ -21,6 +36,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
