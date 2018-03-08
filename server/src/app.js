@@ -92,7 +92,147 @@ app.put('/USERS', function (req, res) {
     console.log(req.body);
     connection.query('DELETE FROM `USERS` WHERE `userID`=?', [req.body.userID], function (error, results, fields) {
        if (error) throw error;
-       res.end('Record has been deleted!');
+       res.end('User has been deleted!');
      });
  });
 
+ //GROUPS
+ //INSERT
+ app.post('/GROUPS', function (req, res) {
+    var params  = req.body;
+    console.log(params);
+    connection.query('INSERT INTO GROUPS SET ?', params, function (error, results, fields) {
+       if (error) throw error;
+       res.end(JSON.stringify(results));
+       console.log('Created new group');
+     });
+ });
+
+//SELECT ALL
+app.get('/GROUPS', function (req, res) {
+    connection.query('select * from GROUPS', function (error, results, fields) {
+        if (error) throw error;
+        res.end(JSON.stringify(results));
+        console.log('Request for all groups');
+    });
+});
+
+//SELECT BY ID
+app.get('/GROUPS/:id', function (req, res) {
+    connection.query('select * from GROUPS where groupName=?', [req.params.id], function (error, results, fields) {
+        if (error) throw error;
+        res.end(JSON.stringify(results));
+        console.log('Request for single group');
+    });
+});
+
+//UPDATE
+app.put('/GROUPS', function (req, res) {
+    connection.query('UPDATE `GROUPS` SET `groupAdmin`=? where `groupName`=?',
+                     [req.body.groupAdmin, req.body.groupName], 
+                     function (error, results, fields) {
+       if (error) throw error;
+       res.end(JSON.stringify(results));
+       console.log('group updated');
+     });
+ });
+
+//DELETE
+app.delete('/GROUPS/', function (req, res) {
+    console.log(req.body);
+    connection.query('DELETE FROM `GROUPS` WHERE `groupName`=?', [req.body.groupName], function (error, results, fields) {
+       if (error) throw error;
+       res.end('Group has been deleted!');
+     });
+ });
+
+ //USERGROUP
+ //INSERT
+ app.post('/USERGROUP', function (req, res) {
+    var params  = req.body;
+    console.log(params);
+    connection.query('INSERT INTO USERGROUP SET ?', params, function (error, results, fields) {
+       if (error) throw error;
+       res.end(JSON.stringify(results));
+       console.log('Created new usergroup record');
+     });
+ });
+ //SELECT ALL
+ app.get('/USERGROUP', function (req, res) {
+    connection.query('select * from USERGROUP', function (error, results, fields) {
+        if (error) throw error;
+        res.end(JSON.stringify(results));
+        console.log('Request for all usergroups');
+    });
+});
+
+ //SELECT ALL GROUPS FOR USER BY ID
+ app.get('/USERGROUP/:id', function (req, res) {
+    connection.query('select * from USERGROUP where userID=?', [req.params.id], function (error, results, fields) {
+        if (error) throw error;
+        res.end(JSON.stringify(results));
+        console.log('Request for all groups for user');
+    });
+}); 
+
+ //DELETE
+ app.delete('/USERGROUP', function (req, res) {
+    console.log(req.body);
+    connection.query('DELETE FROM `USERGROUP` WHERE `groupName`=? AND `userID`=?', [req.body.groupName, req.body.userID], function (error, results, fields) {
+       if (error) throw error;
+       res.end('Usergroup has been deleted!');
+     });
+ });
+
+ //GAMES
+ //INSERT
+ app.post('/GAMES', function (req, res) {
+    var params  = req.body;
+    console.log(params);
+    connection.query('INSERT INTO GAMES SET ?', params, function (error, results, fields) {
+       if (error) throw error;
+       res.end(JSON.stringify(results));
+       console.log('Created new game');
+     });
+ });
+ //SELECT BY ID
+ app.get('/GAMES/:id', function (req, res) {
+    connection.query('select * from GAMES where gameID=?', [req.params.id], function (error, results, fields) {
+        if (error) throw error;
+        res.end(JSON.stringify(results));
+        console.log('Request for single game');
+    });
+}); 
+
+ //SELECT ALL
+ app.get('/GAMES/', function (req, res) {
+    connection.query('select * from GAMES', [req.params.id], function (error, results, fields) {
+        if (error) throw error;
+        res.end(JSON.stringify(results));
+        console.log('Request for all games');
+    });
+}); 
+
+ //UPDATE
+app.put('/GAMES', function (req, res) {
+    connection.query('UPDATE `GAMES` SET `team1`=?, `team2`=?, `winner`=? where `gameID`=?',
+                     [req.body.team1, req.body.team2, req.body.winner, req.body.gameID], 
+                     function (error, results, fields) {
+       if (error) throw error;
+       res.end(JSON.stringify(results));
+       console.log('group updated');
+     });
+ });
+
+ //BRACKETS
+ //INSERT
+
+ //SELECT ALL
+
+ //SELECT BY ID
+
+ //UPDATE
+
+ //DELETE
+
+ 
