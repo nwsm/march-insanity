@@ -40,20 +40,59 @@ app.get('/TEAMS/:id', function (req, res) {
     connection.query('select * from TEAMS where teamID=?', [req.params.id], function (error, results, fields) {
        if (error) throw error;
        res.end(JSON.stringify(results));
+       console.log('Request for single team');
      });
  });
 
  //USERS
- //Create user
+ //INSERT
  app.post('/USERS', function (req, res) {
     var params  = req.body;
     console.log(params);
     connection.query('INSERT INTO USERS SET ?', params, function (error, results, fields) {
        if (error) throw error;
        res.end(JSON.stringify(results));
+       console.log('Created new user');
      });
  });
-/*connection.query('SELECT teamName FROM TEAMS WHERE teamID in (SELECT team1 FROM GAMES) ', function(err, rows, fields) {
-    if (err) throw err;
-    console.log('Team1 is: ', rows[0].teamName);
-});*/
+
+ //SELECT ALL
+app.get('/USERS', function (req, res) {
+    connection.query('select * from USERS', function (error, results, fields) {
+        if (error) throw error;
+        res.end(JSON.stringify(results));
+        console.log('Request for all users');
+    });
+});
+
+//SELECT BY ID
+app.get('/USERS/:id', function (req, res) {
+    connection.query('select * from USERS where userID=?', [req.params.id], function (error, results, fields) {
+        if (error) throw error;
+        res.end(JSON.stringify(results));
+        console.log('Request for single user');
+    });
+});
+
+//UPDATE
+app.put('/USERS', function (req, res) {
+    connection.query('UPDATE `USERS` SET `name`=?,`bracket1`=?, `bracket2`=?, `bracket3`=?,\
+                     `bracket4`=?, `bracket5`=?, `bracket6`=?,`email`=?,`score`=? where `userID`=?',
+                     [req.body.name,req.body.bracket1, req.body.bracket2, req.body.bracket3, req.body.bracket4, 
+                     req.body.bracket5, req.body.bracket6, req.body.email, req.body.score, req.body.userID], 
+                     function (error, results, fields) {
+       if (error) throw error;
+       res.end(JSON.stringify(results));
+       console.log('user updated');
+     });
+ });
+
+ //DELETE
+ app.delete('/USERS/', function (req, res) {
+    console.log(req.body);
+    connection.query('DELETE FROM `USERS` WHERE `userID`=?', [req.body.userID], function (error, results, fields) {
+       if (error) throw error;
+       res.end('Record has been deleted!');
+     });
+ });
+
