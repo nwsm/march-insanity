@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import api from '../services/Api'
 /* eslint-disable */
 export default {
   data: () => ({
@@ -51,12 +52,25 @@ export default {
   },
   methods: {
     googleSignInSuccess (googleUser) {
-      const profile = googleUser.getBasicProfile() // etc etc
-      console.log(googleUser)
-      console.log(profile)
+      var vm = this;  //inside the api function .then below, 'this' will refer to the api,
+                      //so we make a variable referencing the correct 'this' to use to access the store.
+      const profile = googleUser.getBasicProfile()
       this.$store.state.loggedIn = true
       this.$store.state.signinProvider = 'Google'
       this.$store.state.name = profile.ig
+
+      api.getUser('gg-'+profile.Eea).then(function(r){
+        if(r.data.length==0){
+          api.insertUser('gg-'+profile.Eea,profile.U3,profile.ig).then(function() {
+            api.getUser('gg-'+profile.Eea).then(function(res){
+              vm.$store.state.user = res.data[0]
+            })
+          })
+
+        }else{
+          vm.$store.state.user = r.data[0]
+        }
+      })
     },
     googleSignInError (error) {
       // `error` contains any error occurred.
@@ -67,6 +81,8 @@ export default {
         this.$store.state.loggedIn = true
         this.$store.state.signinProvider = 'Facebook'
         this.$store.state.name = facebookUser.name
+
+        console.log(facebookUser);
       })
       this.loggedIn = true
     },
