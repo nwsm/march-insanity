@@ -87,6 +87,34 @@ app.put('/USERS', function (req, res) {
      });
  });
 
+ app.put('/USERS/UPDATEBC', function (req, res) {
+    if(req.body.num==1){
+        connection.query('UPDATE `USERS` SET `bracketCollection1`=? where `userID`=?',
+                        [req.body.bracketCollectionID, req.body.userID], function (error, results, fields) {
+        if (error) throw error;
+        res.end(JSON.stringify(results));
+        console.log('user updated');
+        });
+    }
+    else if(req.body.num==2){
+        connection.query('UPDATE `USERS` SET `bracketCollection2`=? where `userID`=?',
+                        [req.body.bracketCollectionID, req.body.userID], function (error, results, fields) {
+        if (error) throw error;
+        res.end(JSON.stringify(results));
+        console.log('user updated');
+        });        
+    }  
+    else if(req.body.num==3){
+        connection.query('UPDATE `USERS` SET `bracketCollection3`=? where `userID`=?',
+                        [req.body.bracketCollectionID, req.body.userID], function (error, results, fields) {
+        if (error) throw error;
+        res.end(JSON.stringify(results));
+        console.log('user updated');
+        });        
+    }        
+
+ }); 
+
  //DELETE
  app.delete('/USERS/', function (req, res) {
     console.log(req.body);
@@ -229,7 +257,6 @@ app.put('/GAMES', function (req, res) {
  //INSERT
  app.post('/BRACKETCOLLECTIONS', function (req, res) {
     var params  = req.body;
-    console.log(params);
     connection.query('INSERT INTO BRACKETCOLLECTIONS SET ?', params, function (error, results, fields) {
        if (error) throw error;
        res.end(JSON.stringify(results));
@@ -280,7 +307,7 @@ app.put('/GAMES', function (req, res) {
 
  //BRACKETS
  //INSERT
- app.post('/BRACKETS', function (req, res) {
+ app.post('/BRACKETS/', function (req, res) {
     var params  = req.body;
     console.log(params);
     connection.query('INSERT INTO BRACKETS SET ?', params, function (error, results, fields) {
@@ -359,4 +386,30 @@ app.put('/GAMES', function (req, res) {
      });
  });
 
- 
+ app.post('/auth/google/', function (req, res) {
+    var token = req.body.token
+    const {OAuth2Client} = require('google-auth-library');
+    const client = new OAuth2Client('704186925497-7u9boed7u6cp7os7mrlg797uu86cm1m9.apps.googleusercontent.com');
+    async function verify() {
+        const ticket = await client.verifyIdToken({
+            idToken: token,
+            audience: '704186925497-7u9boed7u6cp7os7mrlg797uu86cm1m9.apps.googleusercontent.com',
+        });
+        const payload = ticket.getPayload();
+        const userid = payload['sub'];
+        var ourid = 'gg-' + userid
+        connection.query('select * from USERS where userID=?', [ourid], function (error, results, fields) {
+            if (error) throw error;
+            if(results.length>0){
+                console.log("user found")
+                res.end(JSON.stringify(results));
+            }else{
+                connection.query('INSERT INTO USERS SET ?', { userid : ourid, email : payload.email, name : payload.name}, function (error2, results2, fields2) {
+                    if (error2) throw error2;
+                    res.end(results2);
+                    });
+            }
+        });    
+    }
+    verify().catch(console.error);     
+ })

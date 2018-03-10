@@ -1,7 +1,7 @@
 <template>
   <b-navbar id="nav" toggleable="md" type="dark" variant="primary">
     <div v-if="$store.state.loggedIn" id="loginInfo">
-      Logged in as {{$store.state.name}} through {{$store.state.signinProvider}} <b-button size="sm" variant="outline sm" @click="logout">Logout</b-button>
+      Logged in as {{$store.state.user.name}} through {{$store.state.signinProvider}} <b-button size="sm" variant="outline sm" @click="logout">Logout</b-button>
     </div>
     <div v-if="!$store.state.loggedIn">
       <g-signin-button
@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import api from '../services/Api'
 /* eslint-disable */
 export default {
   data: () => ({
@@ -51,12 +52,13 @@ export default {
   },
   methods: {
     googleSignInSuccess (googleUser) {
-      const profile = googleUser.getBasicProfile() // etc etc
-      console.log(googleUser)
-      console.log(profile)
-      this.$store.state.loggedIn = true
-      this.$store.state.signinProvider = 'Google'
-      this.$store.state.name = profile.ig
+      var vm = this
+      const authres = googleUser.getAuthResponse(true)
+      api.loginGoogle(authres.id_token).then(function (r) {
+        vm.$store.state.user = r.data[0]
+        vm.$store.state.loggedIn = true
+        vm.$store.state.signinProvider = 'Google'
+      })
     },
     googleSignInError (error) {
       // `error` contains any error occurred.
@@ -67,6 +69,8 @@ export default {
         this.$store.state.loggedIn = true
         this.$store.state.signinProvider = 'Facebook'
         this.$store.state.name = facebookUser.name
+
+        console.log(facebookUser);
       })
       this.loggedIn = true
     },
