@@ -259,9 +259,32 @@ app.put('/GAMES', function (req, res) {
     var params  = req.body;
     connection.query('INSERT INTO BRACKETCOLLECTIONS SET ?', params, function (error, results, fields) {
        if (error) throw error;
-       res.end(JSON.stringify(results));
+       //res.end(JSON.stringify(results));
        console.log('Created new bracket collection');
      });
+
+    var records = [
+        [params.CollectionID+"--1",1],
+        [params.CollectionID+"--2",2],
+        [params.CollectionID+"--3",3],
+        [params.CollectionID+"--4",4],
+        [params.CollectionID+"--5",5],
+        [params.CollectionID+"--6",6]
+    ]
+
+    connection.query('INSERT INTO BRACKETS (bracketID,bracketType) VALUES ?', [records], function (error, results, fields) {
+        if (error) throw error;
+        console.log('Created 6 new brackets');
+        });       
+        
+        connection.query('UPDATE `BRACKETCOLLECTIONS` SET `Bracket1ID`=?, `Bracket2ID`=?, `Bracket3ID` =?, `Bracket4ID`  =?, `Bracket5ID`  =?, `Bracket6ID`  =? where `CollectionID`=?',
+                        [params.CollectionID+"--1", params.CollectionID+"--2", params.CollectionID+"--3",
+                         params.CollectionID+"--4", params.CollectionID+"--5", params.CollectionID+"--6", params.CollectionID], 
+                        function (error, results, fields) {
+        if (error) throw error;
+        res.end(JSON.stringify(results));
+        console.log('group updated');
+        });        
  });
 
  //SELECT ALL
@@ -326,7 +349,7 @@ app.put('/GAMES', function (req, res) {
 });
 
  //SELECT BY ID
- app.get('/BRACKETS/:id', function (req, res) {
+ app.get('/BRACKET/:id', function (req, res) {
     connection.query('select * from BRACKETS where bracketID=?', [req.params.id], function (error, results, fields) {
         if (error) throw error;
         res.end(JSON.stringify(results));
