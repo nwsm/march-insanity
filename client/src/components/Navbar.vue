@@ -1,7 +1,7 @@
 <template>
   <b-navbar id="nav" toggleable="md" type="dark" variant="primary">
     <div v-if="$store.state.loggedIn" id="loginInfo">
-      Logged in as {{$store.state.name}} through {{$store.state.signinProvider}} <b-button size="sm" variant="outline sm" @click="logout">Logout</b-button>
+      Logged in as {{$store.state.user.name}} through {{$store.state.signinProvider}} <b-button size="sm" variant="outline sm" @click="logout">Logout</b-button>
     </div>
     <div v-if="!$store.state.loggedIn">
       <g-signin-button
@@ -55,9 +55,9 @@ export default {
       var vm = this
       const authres = googleUser.getAuthResponse(true)
       api.loginGoogle(authres.id_token).then(function (r) {
-        console.log(r)
         vm.$store.state.user = r.data[0]
-        console.log(vm.$store.state.user)
+        vm.$store.state.loggedIn = true
+        vm.$store.state.signinProvider = 'Google'
       })
     },
     googleSignInError (error) {

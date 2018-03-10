@@ -87,6 +87,34 @@ app.put('/USERS', function (req, res) {
      });
  });
 
+ app.put('/USERS/UPDATEBC', function (req, res) {
+    if(req.body.num==1){
+        connection.query('UPDATE `USERS` SET `bracketCollection1`=? where `userID`=?',
+                        [req.body.bracketCollectionID, req.body.userID], function (error, results, fields) {
+        if (error) throw error;
+        res.end(JSON.stringify(results));
+        console.log('user updated');
+        });
+    }
+    else if(req.body.num==2){
+        connection.query('UPDATE `USERS` SET `bracketCollection2`=? where `userID`=?',
+                        [req.body.bracketCollectionID, req.body.userID], function (error, results, fields) {
+        if (error) throw error;
+        res.end(JSON.stringify(results));
+        console.log('user updated');
+        });        
+    }  
+    else if(req.body.num==3){
+        connection.query('UPDATE `USERS` SET `bracketCollection3`=? where `userID`=?',
+                        [req.body.bracketCollectionID, req.body.userID], function (error, results, fields) {
+        if (error) throw error;
+        res.end(JSON.stringify(results));
+        console.log('user updated');
+        });        
+    }        
+
+ }); 
+
  //DELETE
  app.delete('/USERS/', function (req, res) {
     console.log(req.body);
@@ -229,7 +257,6 @@ app.put('/GAMES', function (req, res) {
  //INSERT
  app.post('/BRACKETCOLLECTIONS', function (req, res) {
     var params  = req.body;
-    console.log(params);
     connection.query('INSERT INTO BRACKETCOLLECTIONS SET ?', params, function (error, results, fields) {
        if (error) throw error;
        res.end(JSON.stringify(results));
@@ -280,7 +307,7 @@ app.put('/GAMES', function (req, res) {
 
  //BRACKETS
  //INSERT
- app.post('/BRACKETS', function (req, res) {
+ app.post('/BRACKETS/', function (req, res) {
     var params  = req.body;
     console.log(params);
     connection.query('INSERT INTO BRACKETS SET ?', params, function (error, results, fields) {

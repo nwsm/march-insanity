@@ -1,7 +1,7 @@
 <template>
   <div>
     <router-link to="/Groups"><b-btn size="lg" variant="outline-primary">Your Groups</b-btn></router-link>
-    <router-link to="/Brackets"><b-btn size="lg" variant="outline-primary">Your Brackets</b-btn></router-link>
+    <router-link to="/BracketCollections"><b-btn size="lg" variant="outline-primary">Your Bracket Collections</b-btn></router-link>
   </div>
 </template>
 
