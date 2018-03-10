@@ -18,6 +18,10 @@ export default {
     });
   },
 
+  loginGoogle : function (id) {
+    return axios.post('/auth/google/',{ token : id })
+  },
+
   getBracketCollection : function (bcid) {
     return axios.get('/BRACKETCOLLECTIONS/',{
       id : bcid

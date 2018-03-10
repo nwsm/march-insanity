@@ -359,4 +359,30 @@ app.put('/GAMES', function (req, res) {
      });
  });
 
- 
+ app.post('/auth/google/', function (req, res) {
+    var token = req.body.token
+    const {OAuth2Client} = require('google-auth-library');
+    const client = new OAuth2Client('704186925497-7u9boed7u6cp7os7mrlg797uu86cm1m9.apps.googleusercontent.com');
+    async function verify() {
+        const ticket = await client.verifyIdToken({
+            idToken: token,
+            audience: '704186925497-7u9boed7u6cp7os7mrlg797uu86cm1m9.apps.googleusercontent.com',
+        });
+        const payload = ticket.getPayload();
+        const userid = payload['sub'];
+        var ourid = 'gg-' + userid
+        connection.query('select * from USERS where userID=?', [ourid], function (error, results, fields) {
+            if (error) throw error;
+            if(results.length>0){
+                console.log("user found")
+                res.end(JSON.stringify(results));
+            }else{
+                connection.query('INSERT INTO USERS SET ?', { userid : ourid, email : payload.email, name : payload.name}, function (error2, results2, fields2) {
+                    if (error2) throw error2;
+                    res.end(results2);
+                    });
+            }
+        });    
+    }
+    verify().catch(console.error);     
+ })
