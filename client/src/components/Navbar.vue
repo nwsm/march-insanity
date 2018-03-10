@@ -52,9 +52,12 @@ export default {
   },
   methods: {
     googleSignInSuccess (googleUser) {
+      var vm = this
       const authres = googleUser.getAuthResponse(true)
       api.loginGoogle(authres.id_token).then(function (r) {
         console.log(r)
+        vm.$store.state.user = r.data[0]
+        console.log(vm.$store.state.user)
       })
     },
     googleSignInError (error) {
