@@ -452,7 +452,7 @@ app.put('/GAMES', function (req, res) {
         from: 'luernese2018@gmail.com',
         to: req.params.email,
         subject: 'March Insanity Invites',
-        text: 'Come Play March Insanity! Join Group ' + req.params.groupName + '! ' + 'http://localhost:8081/#/Groups/'+ req.params.groupName
+        text: 'Come Play March Insanity! Join Group ' + req.params.groupName + '! ' + 'https://march-insanity.herokuapp.com/#/Groups/'+ req.params.groupName
       };
     transporter.sendMail(mailOptions, function(error, info){
         if (error) {
