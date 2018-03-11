@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Main from '../pages/Main'
 import Groups from '../pages/Groups'
+import Group from '../pages/Group'
+import Invite from '../pages/Invite'
 import BracketCollections from '../pages/BracketCollections'
 import BracketCollection from '../pages/BracketCollection'
 
@@ -18,6 +20,17 @@ export default new Router({
       path: '/Groups',
       name: 'Groups',
       component: Groups
+    },
+    {
+      path: '/Groups/:id',
+      name: 'Group',
+      component: Group
+    },
+    {
+      path: '/Invite',
+      name: 'Invite',
+      component: Invite
+
     },
     {
       path: '/BracketCollections',

@@ -4,6 +4,7 @@ const path = require('path')    // <-- added
 const config = require('./config/config')
 var mysql = require('mysql');
 var bodyParser = require('body-parser');
+var nodemailer = require('nodemailer');
 
 const app = express()
 app.use(cors())
@@ -14,6 +15,14 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 }));
 
 var connection = mysql.createConnection('mysql://t8duqyzxyq4s62rz:hyfshhrceynu8ldm@l3855uft9zao23e2.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/x0027tll75uqeyj9');
+
+var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'luernese2018@gmail.com',
+      pass: 'lenscop2018'
+    }
+  });
 
 connection.connect((error) => {
     if(error){
@@ -130,9 +139,7 @@ app.put('/USERS', function (req, res) {
     var params  = req.body;
     console.log(params);
     connection.query('INSERT INTO GROUPS SET ?', params, function (error, results, fields) {
-       if (error) {
-           console.log("Group Already Exists!")
-       };
+       if (error) throw error;
        res.end(JSON.stringify(results));
        console.log('Created new group');
      });
@@ -261,9 +268,32 @@ app.put('/GAMES', function (req, res) {
     var params  = req.body;
     connection.query('INSERT INTO BRACKETCOLLECTIONS SET ?', params, function (error, results, fields) {
        if (error) throw error;
-       res.end(JSON.stringify(results));
+       //res.end(JSON.stringify(results));
        console.log('Created new bracket collection');
      });
+
+    var records = [
+        [params.CollectionID+"--1",1],
+        [params.CollectionID+"--2",2],
+        [params.CollectionID+"--3",3],
+        [params.CollectionID+"--4",4],
+        [params.CollectionID+"--5",5],
+        [params.CollectionID+"--6",6]
+    ]
+
+    connection.query('INSERT INTO BRACKETS (bracketID,bracketType) VALUES ?', [records], function (error, results, fields) {
+        if (error) throw error;
+        console.log('Created 6 new brackets');
+        });       
+        
+        connection.query('UPDATE `BRACKETCOLLECTIONS` SET `Bracket1ID`=?, `Bracket2ID`=?, `Bracket3ID` =?, `Bracket4ID`  =?, `Bracket5ID`  =?, `Bracket6ID`  =? where `CollectionID`=?',
+                        [params.CollectionID+"--1", params.CollectionID+"--2", params.CollectionID+"--3",
+                         params.CollectionID+"--4", params.CollectionID+"--5", params.CollectionID+"--6", params.CollectionID], 
+                        function (error, results, fields) {
+        if (error) throw error;
+        res.end(JSON.stringify(results));
+        console.log('group updated');
+        });        
  });
 
  //SELECT ALL
@@ -328,7 +358,7 @@ app.put('/GAMES', function (req, res) {
 });
 
  //SELECT BY ID
- app.get('/BRACKETS/:id', function (req, res) {
+ app.get('/BRACKET/:id', function (req, res) {
     connection.query('select * from BRACKETS where bracketID=?', [req.params.id], function (error, results, fields) {
         if (error) throw error;
         res.end(JSON.stringify(results));
@@ -413,5 +443,22 @@ app.put('/GAMES', function (req, res) {
             }
         });    
     }
-    verify().catch(console.error);     
+    verify().catch(console.error);    
  })
+
+ //SEND EMAIL
+ app.get('/SEND/:email/:groupName', function (req, res) {
+    var mailOptions = {
+        from: 'luernese2018@gmail.com',
+        to: req.params.email,
+        subject: 'March Insanity Invites',
+        text: 'Come Play March Insanity! Join Group ' + req.params.groupName + '! ' + 'http://localhost:8081/#/Groups/'+ req.params.groupName
+      };
+    transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Email sent: ' + info.response);
+        }
+      });
+})

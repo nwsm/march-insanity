@@ -1,7 +1,8 @@
 <template>
   <div>
+    <h1>Your Groups:</h1>
     <div v-for="group in Groups">
-       <b-btn> {{group.groupName}}</b-btn>
+       <router-link :to="{ name: 'Group', params: { id: group.groupName, groupAdmin: group.groupAdmin } }"><b-btn> {{group.groupName}}</b-btn></router-link>
     </div>
     <input v-model="newGroupName" placeholder="New Group Name">
       <p>{{ groupExistsError}}</p>
@@ -33,17 +34,13 @@ export default {
       this.Groups = []
 
       var vm = this
-      api.getGroups().then(function(r){
-        for (var i = 0; i < r.data.length; i++) {
-          console.log(r.data[0])
-          if(vm.$store.state.user.userID == r.data[i].groupAdmin){
-            api.getGroup(r.data[i].groupName).then(function(R) {
-              vm.Groups.push(R.data[0])
-            })
-          }
+      api.getUserGroups(vm.$store.state.user.userID).then(function(r){
+        for (var i = 0; i < r.data.length; i++){
+          api.getGroup(r.data[i].groupName).then(function(R) {
+            vm.Groups.push(R.data[0])
+          })
         }
       })
-      
     },
 
     createGroup : async function() {

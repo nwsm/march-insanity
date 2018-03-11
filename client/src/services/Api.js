@@ -59,6 +59,15 @@ export default {
 
   getGroup: function (gName) {
     return axios.get('/GROUPS/' + gName)
+  },
+
+  getUserGroups: function (uID) {
+    return axios.get('/USERGROUP/' + uID)
+  },
+
+  sendMail: function (email, gName) {
+    console.log('SM: ' + email + ' ' + gName)
+    axios.get('/SEND/' + email + '/' + gName)
   }
 
 }
