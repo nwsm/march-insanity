@@ -45,4 +45,33 @@ export default {
 
   },
 
+  createGroup: async function (NewGroupName, userid) {
+    await axios.post('/GROUPS/', {
+      groupName: NewGroupName,
+      groupAdmin: userid
+    })
+
+    return;
+  },
+
+  createUserGroup: async function (gName, uID) {
+    await axios.post('/USERGROUP/', {
+      groupName: gName,
+      userID: uID
+    })
+  },
+
+  getGroup: function (gName) {
+    return axios.get('/GROUPS/' + gName)
+  },
+
+  getUserGroups: function (uID) {
+    return axios.get('/USERGROUP/' + uID)
+  },
+
+  sendMail: function (email, gName) {
+    console.log('SM: ' + email + ' ' + gName)
+    axios.get('/SEND/' + email + '/' + gName)
+  }
+
 }

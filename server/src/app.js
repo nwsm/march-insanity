@@ -4,6 +4,7 @@ const path = require('path')    // <-- added
 const config = require('./config/config')
 var mysql = require('mysql');
 var bodyParser = require('body-parser');
+var nodemailer = require('nodemailer');
 
 const app = express()
 app.use(cors())
@@ -14,6 +15,14 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 }));
 
 var connection = mysql.createConnection('mysql://t8duqyzxyq4s62rz:hyfshhrceynu8ldm@l3855uft9zao23e2.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/x0027tll75uqeyj9');
+
+var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'luernese2018@gmail.com',
+      pass: 'lenscop2018'
+    }
+  });
 
 connection.connect((error) => {
     if(error){
@@ -434,5 +443,22 @@ app.put('/GAMES', function (req, res) {
             }
         });    
     }
-    verify().catch(console.error);     
+    verify().catch(console.error);    
  })
+
+ //SEND EMAIL
+ app.get('/SEND/:email/:groupName', function (req, res) {
+    var mailOptions = {
+        from: 'luernese2018@gmail.com',
+        to: req.params.email,
+        subject: 'March Insanity Invites',
+        text: 'Come Play March Insanity! Join Group ' + req.params.groupName + '! ' + 'https://march-insanity.herokuapp.com/#/Groups/'+ req.params.groupName
+      };
+    transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Email sent: ' + info.response);
+        }
+      });
+})
