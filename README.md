@@ -1,6 +1,13 @@
 # march-insanity
 https://march-insanity.herokuapp.com
 
+## Backburner TO DO:
+1) Strip out secret credentials (db connection string, google/fb server side credentials, etc) into an uncommited environment variable file and use dotenv to manage them. This is more secure, allows us to have dev/prod dbs in the future, allows us to use correct FB auth.
+2) Refactor entire project into client and server repos that build to separate heroku apps. This makes development easier.
+3) Secure API endpoints.
+4) Implement secure Facebook login in the same manner as Google. Requires #1.
+
+
 ## Installation instructions:
 
 Install git CLI: https://git-scm.com/downloads
