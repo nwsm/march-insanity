@@ -1,7 +1,7 @@
 <template>
   <div>
       <div v-for="collection in bracketCollections">
-        <router-link :to="{ name: 'BracketCollection', params: { bracketId: collection.CollectionID } }"><b-btn>Bracket {{collection.CollectionID}}</b-btn></router-link>
+        <router-link :to="{ name: 'BracketCollection', params: { bracketCollectionId: collection.CollectionID } }"><b-btn>Bracket {{collection.CollectionID}}</b-btn></router-link>
       </div>
 
       <div v-if="bracketCollections.length<3">
