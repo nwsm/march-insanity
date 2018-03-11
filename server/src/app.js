@@ -130,7 +130,9 @@ app.put('/USERS', function (req, res) {
     var params  = req.body;
     console.log(params);
     connection.query('INSERT INTO GROUPS SET ?', params, function (error, results, fields) {
-       if (error) throw error;
+       if (error) {
+           console.log("Group Already Exists!")
+       };
        res.end(JSON.stringify(results));
        console.log('Created new group');
      });
