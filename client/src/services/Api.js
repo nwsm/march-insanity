@@ -22,6 +22,10 @@ export default {
     return axios.post('/auth/google/',{ token : id })
   },
 
+  loginFacebook : function (facebookUser) {
+    return axios.post('/auth/facebook/', {fbID: facebookUser.id, fbEmail: facebookUser.email, fbName: facebookUser.name})
+  },
+
   getBracketCollection : function (bcid) {
     return axios.get('/BRACKETCOLLECTIONS/'+bcid)
   },

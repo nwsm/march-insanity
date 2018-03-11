@@ -1,9 +1,9 @@
 <template>
   <b-navbar id="nav" toggleable="md" type="dark" variant="primary">
-    <div v-if="$store.state.loggedIn" id="loginInfo">
-      Logged in as {{$store.state.user.name}} through {{$store.state.signinProvider}} <b-button size="sm" variant="outline sm" @click="logout">Logout</b-button>
+    <div v-if="this.$store.state.loggedIn" id="loginInfo">
+      Logged in as {{this.$store.state.name}} through {{this.$store.state.signinProvider}} <b-button size="sm" variant="outline sm" @click="logout">Logout</b-button>
     </div>
-    <div v-if="!$store.state.loggedIn">
+    <div v-if="!this.$store.state.loggedIn">
       <g-signin-button
         :params="googleSignInParams"
         @success="googleSignInSuccess"
@@ -55,9 +55,23 @@ export default {
       var vm = this
       const authres = googleUser.getAuthResponse(true)
       api.loginGoogle(authres.id_token).then(function (r) {
-        vm.$store.state.user = r.data[0]
-        vm.$store.state.loggedIn = true
-        vm.$store.state.signinProvider = 'Google'
+        console.log(r.data[0])
+        if (r.data[0] == undefined){
+          vm.$store.state.user = r.data
+          vm.$store.state.user.userID = r.data.userid
+          vm.$store.state.name = r.data.name
+          vm.$store.state.loggedIn = true
+          vm.$store.state.signinProvider = 'Google'
+        }
+        else {
+          console.log('in else', r.data[0])
+          vm.$store.state.user = r.data[0]
+          vm.$store.state.user.userID = r.data[0].userID
+          vm.$store.state.name = r.data[0].name
+          vm.$store.state.loggedIn = true
+          vm.$store.state.signinProvider = 'Google'
+        }
+        
       })
     },
     googleSignInError (error) {
@@ -65,14 +79,17 @@ export default {
       console.log(error)
     },
     facebookSignInSuccess (response) {
+      var vm = this
       FB.api('/me?fields=name,email', facebookUser => {
-        this.$store.state.loggedIn = true
-        this.$store.state.signinProvider = 'Facebook'
-        this.$store.state.name = facebookUser.name
-
-        console.log(facebookUser);
+        console.log(facebookUser)
+        vm.$store.state.user = facebookUser
+        vm.$store.state.user.userID = 'fb-' + facebookUser.id
+        vm.$store.state.loggedIn = true
+        vm.$store.state.signinProvider = 'Facebook'
+        vm.$store.state.name = facebookUser.name
+        api.loginFacebook(facebookUser)
       })
-      this.loggedIn = true
+      
     },
     facebookSignInError (error) {
       console.log(error)

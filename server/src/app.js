@@ -137,7 +137,6 @@ app.put('/USERS', function (req, res) {
  //INSERT
  app.post('/GROUPS', function (req, res) {
     var params  = req.body;
-    console.log(params);
     connection.query('INSERT INTO GROUPS SET ?', params, function (error, results, fields) {
        if (error) throw error;
        res.end(JSON.stringify(results));
@@ -438,16 +437,42 @@ app.put('/GAMES', function (req, res) {
             }else{
                 connection.query('INSERT INTO USERS SET ?', { userid : ourid, email : payload.email, name : payload.name}, function (error2, results2, fields2) {
                     if (error2) throw error2;
-                    res.end(results2);
+                    res.send({ userid : ourid, email : payload.email, name : payload.name});
                     });
             }
         });    
     }
     verify().catch(console.error);    
- })
+ });
+
+ app.post('/auth/facebook/', function (req,res) {
+    var ourid = 'fb-' + req.body.fbID
+    var ouremail = req.body.fbEmail
+    var ourname = req.body.fbName
+    console.log(ourid, ouremail,ourname)
+    async function checkIfExists(){
+        connection.query('select * from USERS where userID=?', [ourid], function (error, results, fields) {
+            if (error) throw error;
+            if(results.length>0){
+                console.log("fb user found")
+                res.end(JSON.stringify(results));
+            }else{
+                console.log("fb user not found")
+                console.log(ourid, ouremail,ourname)
+                var params = { userid : ourid, email : ouremail, name : ourname}
+                connection.query('INSERT INTO USERS SET ?', params, function (error2, results2, fields2) {
+                    if (error2) throw error2;
+                    res.end(JSON.stringify(results2));
+                });
+            }
+        });    
+    }
+    checkIfExists().catch(console.error);
+
+ });
 
  //SEND EMAIL
- app.get('/SEND/:email/:groupName', function (req, res) {
+ app.get('/SEND/:email/:groupName', function (req, res)  {
     var mailOptions = {
         from: 'luernese2018@gmail.com',
         to: req.params.email,
@@ -461,4 +486,4 @@ app.put('/GAMES', function (req, res) {
           console.log('Email sent: ' + info.response);
         }
       });
-})
+ });
