@@ -1,7 +1,7 @@
 <template>
   <div>
-      <div v-for="bracket in brackets">
-        <router-link :to="{ name: 'Bracket', params: { bracketId: bracket.bracketId } }"><b-btn>Bracket {{bracket.bracketType}}</b-btn></router-link>
+      <div v-for="onebracket in brackets">
+        <router-link :to="{ name: 'Bracket', params: { bracket: onebracket } }"><b-btn>Bracket {{onebracket.bracketType}}</b-btn></router-link>
       </div>
       <router-link to="/">Main</router-link>
   </div>
