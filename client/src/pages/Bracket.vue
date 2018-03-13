@@ -1,6 +1,11 @@
 <template>
   <div>
-    <b-btn v-if="currentView>0" @click="incrementView(-1)"> &lt; </b-btn><b-btn @click="saveBracket">Save</b-btn><b-btn v-if="currentView<4" @click="incrementView(1)"> &gt; </b-btn>
+    <h1><b-badge variant="success">{{viewNames[currentView]}}</b-badge></h1>
+    <b-btn v-if="currentView>0" @click="incrementView(-1)"> &lt; </b-btn>
+    <div v-if="bracket.bracketType>$store.state.currentRound"><b-btn @click="saveBracket">Save</b-btn></div>
+    <div v-else><b-badge variant="warning">Too late to edit this bracket!</b-badge></div>
+
+    <b-btn v-if="currentView<4" @click="incrementView(1)"> &gt; </b-btn>
     <regionalBracket v-if="currentView==0" :games="midwest"></regionalBracket>
     <regionalBracket v-if="currentView==1" :games="west"></regionalBracket>
     <regionalBracket v-if="currentView==2" :games="east"></regionalBracket>
@@ -26,7 +31,8 @@ export default {
       east: [],
       west: [],
       south: [],
-      finalFour: []
+      finalFour: [],
+      viewNames: ['Midwest','West','East','South','Final Four']
     }
   },
   created() {
@@ -37,9 +43,16 @@ export default {
     var vm = this
     vm.getGames().then(function (r) {
       vm.splitGames(vm)
-    })
+    }),
+    this.updateCurrentRound()
   },
   methods : { //put functions here
+    updateCurrentRound(){
+      var vm = this
+      api.getCurrentRound().then(function (r) {
+        vm.$store.state.currentRound = r.data[0].settingValue
+      })
+    },
     incrementView : function (x) {
       this.currentView += x
     },
@@ -99,7 +112,6 @@ export default {
           vm.finalFour.push(vm.games[i])
         else if(vm.games[i].gameID==63)
           vm.finalFour.push(vm.games[i])
-
 
       }
     }
