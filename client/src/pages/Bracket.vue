@@ -5,7 +5,7 @@
     <regionalBracket v-if="currentView==1" :games="west"></regionalBracket>
     <regionalBracket v-if="currentView==2" :games="east"></regionalBracket>
     <regionalBracket v-if="currentView==3" :games="south"></regionalBracket>
-    <regionalBracket v-if="currentView==4" :games="finalFour"></regionalBracket>
+    <finalFour v-if="currentView==4" :games="finalFour"></finalFour>
 
     <router-link to="/">Main</router-link>
   </div>
@@ -14,6 +14,7 @@
 <script>
 import api from '../services/Api' //this file is where we define functions to call the API. Add functions to the file as needed
 import regionalBracket from '../components/RegionalBracket'
+import finalFour from '../components/FinalFour'
 export default {
   name: 'Bracket',
   data () {
@@ -76,14 +77,22 @@ export default {
           vm.east.push(vm.games[i])
         else if(vm.games[i].gameID<57)
           vm.south.push(vm.games[i])
-        else if(vm.games[i].gameID==57) //elite eight
+        else if(vm.games[i].gameID==57){ //elite eight
           vm.midwest.push(vm.games[i])
-        else if(vm.games[i].gameID==58)
+          vm.finalFour.push(vm.games[i])
+        }
+        else if(vm.games[i].gameID==58){
           vm.west.push(vm.games[i])
-        else if(vm.games[i].gameID==59)
+          vm.finalFour.push(vm.games[i])
+        }
+        else if(vm.games[i].gameID==59){
           vm.east.push(vm.games[i])
-        else if(vm.games[i].gameID==60)
+          vm.finalFour.push(vm.games[i])
+        }
+        else if(vm.games[i].gameID==60){
           vm.south.push(vm.games[i])
+          vm.finalFour.push(vm.games[i])
+        }
         else if(vm.games[i].gameID==61) //final four
           vm.finalFour.push(vm.games[i])
         else if(vm.games[i].gameID==62)
@@ -96,7 +105,8 @@ export default {
     }
   },
   components: {
-    regionalBracket
+    regionalBracket,
+    finalFour
   }
 }
 </script>

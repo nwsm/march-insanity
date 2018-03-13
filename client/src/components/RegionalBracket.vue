@@ -51,7 +51,7 @@
         </ul>
         <ul>
             <li>&nbsp;</li>
-            <div class="game game-top ">   {{ teams[$store.state.bracket['Winner'+games[14].gameID]] ? teams[$store.state.bracket['Winner'+games[14].gameID]].teamName : "" }}<span v-html=invis()></span></div>
+            <div class="game game-bottom ">   {{ teams[$store.state.bracket['Winner'+games[14].gameID]] ? teams[$store.state.bracket['Winner'+games[14].gameID]].teamName : "" }}<span v-html=invis()></span></div>
             <li>&nbsp;</li>
         </ul>
       </main>
@@ -76,17 +76,25 @@ export default {
   },
   mounted : function () {
     this.getTeams()
+    this.updateCurrentRound()
   },
   created : function () {
   },
   methods : { //put functions here
+    updateCurrentRound(){
+      var vm = this
+      api.getCurrentRound().then(function (r) {
+        vm.$store.state.currentRound = r.data[0].settingValue
+      })
+    },
     getTeams : async function () {
       var t = await api.getTeams()
       this.teams = t.data
     },
     setNext : function (gameID, gteam, bteam) {
       var vm = this
-
+      if(vm.games.find(function(e){return e.gameID==gameID}).round<=vm.$store.state.currentRound)
+        return
       if(!gteam){
         vm.$store.state.bracket['Winner'+gameID] = bteam
       }else{

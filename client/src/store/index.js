@@ -8,7 +8,8 @@ const state = {
   signinProvider: null,
   name: null,
   user: null,
-  bracket: null
+  bracket: null,
+  currentRound: 6
 }
 
 const mutations = {

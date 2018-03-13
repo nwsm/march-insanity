@@ -18,7 +18,9 @@ export default {
   getGames : function () {
     return axios.get('/GAMES/')
   },
-
+  getCurrentRound : function () {
+    return axios.get('/CURRENTROUND/')
+  },
   insertUser : function (id,em,fn) {
     return axios.post('/USERS/',{
       userID:id,
