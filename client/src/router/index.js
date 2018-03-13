@@ -6,6 +6,7 @@ import Group from '../pages/Group'
 import Invite from '../pages/Invite'
 import BracketCollections from '../pages/BracketCollections'
 import BracketCollection from '../pages/BracketCollection'
+import Bracket from '../pages/Bracket'
 
 Vue.use(Router)
 
@@ -41,6 +42,11 @@ export default new Router({
       path: '/BracketCollection/:id',
       name: 'BracketCollection',
       component: BracketCollection
+    },
+    {
+      path: '/Bracket/:bracket',
+      name: 'Bracket',
+      component: Bracket
     }
   ]
 })

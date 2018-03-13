@@ -5,11 +5,22 @@ export default {
   getGroups : function () {
     return axios.get('/GROUPS')
   },
-
+  saveBracket : function () {
+    return axios.put('/BRACKETS/', store.state.bracket)
+  },
   getUser : function (id) {
     return axios.get('/USERS/' + id)
   },
 
+  getTeams : function () {
+    return axios.get('/TEAMS')
+  },
+  getGames : function () {
+    return axios.get('/GAMES/')
+  },
+  getCurrentRound : function () {
+    return axios.get('/CURRENTROUND/')
+  },
   insertUser : function (id,em,fn) {
     return axios.post('/USERS/',{
       userID:id,
