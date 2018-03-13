@@ -55,7 +55,6 @@ export default {
       var vm = this
       const authres = googleUser.getAuthResponse(true)
       api.loginGoogle(authres.id_token).then(function (r) {
-        console.log(r.data[0])
         if (r.data[0] == undefined){
           vm.$store.state.user = r.data
           vm.$store.state.user.userID = r.data.userid
@@ -64,7 +63,6 @@ export default {
           vm.$store.state.signinProvider = 'Google'
         }
         else {
-          console.log('in else', r.data[0])
           vm.$store.state.user = r.data[0]
           vm.$store.state.user.userID = r.data[0].userID
           vm.$store.state.name = r.data[0].name
