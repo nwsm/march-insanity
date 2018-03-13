@@ -17,23 +17,25 @@
       <b-btn @click="submitBCChoice">Submit Choice</b-btn>
     </div>  
     <router-link to="/Groups">Back to your groups</router-link>
-    <h2>Group Standings</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Player</th>
-          <th>Bracket Collection</th>
-          <th>Score</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="entry in entries">
-          <td>{{entry.userID}}</td>
-          <td>{{entry.bracketCollection}}</td>
-          <td>{{entry.Score}}</td>
-        </tr>
-      </tbody>
-    </table>
+    <div v-if="!notInGroup">
+      <h2>Group Standings</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Player</th>
+            <th>Bracket Collection</th>
+            <th>Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="entry in entries">
+            <td>{{entry.userID}}</td>
+            <td>{{entry.bracketCollection}}</td>
+            <td>{{entry.Score}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -92,9 +94,10 @@ export default {
         }
     },
 
-   joinGroup: function() {
-       api.createUserGroup(this.groupName, this.userID).then(
+   joinGroup: async function() {
+       await api.createUserGroup(this.groupName, this.userID).then(
            this.checkMembership())
+       this.getEntries() 
    },
 
    getEntries: async function() {
