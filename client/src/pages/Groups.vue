@@ -47,21 +47,17 @@ export default {
       var vm = this
       var numGroups = 0
       var newNumGroups = 0
-      await api.getGroups().then(function(r){
-        numGroups = r.data.length
+      await api.getGroup(vm.newGroupName).then(async function(r){
+        if (r.data.length == 0){
+          await api.createGroup(vm.newGroupName, vm.$store.state.user.userID)
+          vm.groupExistsError = ""
+          api.createUserGroup(vm.newGroupName,vm.$store.state.user.userID)
+        }
+        else {
+           vm.groupExistsError = "Group already exists!"
+        }
       })
-      await api.createGroup(this.newGroupName, vm.$store.state.user.userID)
-      await api.getGroups().then(function(r){
-          newNumGroups = r.data.length
-      })
-      if (newNumGroups == numGroups) {
-        this.groupExistsError = "Group already exists!"
-      }
-      else {
-        this.groupExistsError = ""
-        api.createUserGroup(this.newGroupName,vm.$store.state.user.userID)
-      }
-      this.updateUserGroups();
+      vm.updateUserGroups();
       
     }
   }

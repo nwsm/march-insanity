@@ -137,7 +137,6 @@ app.put('/USERS', function (req, res) {
  //INSERT
  app.post('/GROUPS', function (req, res) {
     var params  = req.body;
-    console.log(params);
     connection.query('INSERT INTO GROUPS SET ?', params, function (error, results, fields) {
        if (error) throw error;
        res.end(JSON.stringify(results));
@@ -176,7 +175,6 @@ app.put('/GROUPS', function (req, res) {
 
 //DELETE
 app.delete('/GROUPS/', function (req, res) {
-    console.log(req.body);
     connection.query('DELETE FROM `GROUPS` WHERE `groupName`=?', [req.body.groupName], function (error, results, fields) {
        if (error) throw error;
        res.end('Group has been deleted!');
@@ -187,7 +185,6 @@ app.delete('/GROUPS/', function (req, res) {
  //INSERT
  app.post('/USERGROUP', function (req, res) {
     var params  = req.body;
-    console.log(params);
     connection.query('INSERT INTO USERGROUP SET ?', params, function (error, results, fields) {
        if (error) throw error;
        res.end(JSON.stringify(results));
@@ -212,9 +209,28 @@ app.delete('/GROUPS/', function (req, res) {
     });
 }); 
 
+//SELECT ALL MEMBERS OF A GROUP
+app.get('/MEMBERS/:gname', function (req, res) {
+    connection.query('select * from USERGROUP where groupName=?', [req.params.gname], function (error, results, fields) {
+        if (error) throw error;
+        res.end(JSON.stringify(results));
+        console.log('Request for all users in group');
+    });
+}); 
+
+//UPDATE
+app.put('/USERGROUP', function (req, res) {
+    connection.query('UPDATE `USERGROUP` SET `bracketCollection`=? where `groupName`=? and `userID`=?',
+                     [req.body.bracketCollection, req.body.groupName, req.body.userID], 
+                     function (error, results, fields) {
+       if (error) throw error;
+       res.end(JSON.stringify(results));
+       console.log('usergroup updated');
+     });
+ });
+
  //DELETE
  app.delete('/USERGROUP', function (req, res) {
-    console.log(req.body);
     connection.query('DELETE FROM `USERGROUP` WHERE `groupName`=? AND `userID`=?', [req.body.groupName, req.body.userID], function (error, results, fields) {
        if (error) throw error;
        res.end('Usergroup has been deleted!');
@@ -225,7 +241,6 @@ app.delete('/GROUPS/', function (req, res) {
  //INSERT
  app.post('/GAMES', function (req, res) {
     var params  = req.body;
-    console.log(params);
     connection.query('INSERT INTO GAMES SET ?', params, function (error, results, fields) {
        if (error) throw error;
        res.end(JSON.stringify(results));
@@ -329,7 +344,6 @@ app.put('/GAMES', function (req, res) {
 
  //DELETE
  app.delete('/BRACKETCOLLECTIONS', function (req, res) {
-    console.log(req.body);
     connection.query('DELETE FROM `BRACKETCOLLECTIONS` WHERE `CollectionID`=?', [req.body.CollectionID], function (error, results, fields) {
        if (error) throw error;
        res.end('Collection has been deleted!');
@@ -341,7 +355,6 @@ app.put('/GAMES', function (req, res) {
  //INSERT
  app.post('/BRACKETS/', function (req, res) {
     var params  = req.body;
-    console.log(params);
     connection.query('INSERT INTO BRACKETS SET ?', params, function (error, results, fields) {
        if (error) throw error;
        res.end(JSON.stringify(results));
@@ -411,7 +424,6 @@ app.put('/GAMES', function (req, res) {
  
  //DELETE
  app.delete('/BRACKETS', function (req, res) {
-    console.log(req.body);
     connection.query('DELETE FROM `BRACKETS` WHERE `bracketID`=?', [req.body.bracketID], function (error, results, fields) {
        if (error) throw error;
        res.end('bracket has been deleted!');
@@ -438,16 +450,40 @@ app.put('/GAMES', function (req, res) {
             }else{
                 connection.query('INSERT INTO USERS SET ?', { userid : ourid, email : payload.email, name : payload.name}, function (error2, results2, fields2) {
                     if (error2) throw error2;
-                    res.end(results2);
+                    res.send({ userid : ourid, email : payload.email, name : payload.name});
                     });
             }
         });    
     }
     verify().catch(console.error);    
- })
+ });
+
+ app.post('/auth/facebook/', function (req,res) {
+    var ourid = 'fb-' + req.body.fbID
+    var ouremail = req.body.fbEmail
+    var ourname = req.body.fbName
+    async function checkIfExists(){
+        connection.query('select * from USERS where userID=?', [ourid], function (error, results, fields) {
+            if (error) throw error;
+            if(results.length>0){
+                console.log("fb user found")
+                res.end(JSON.stringify(results));
+            }else{
+                console.log("fb user not found")
+                var params = { userid : ourid, email : ouremail, name : ourname}
+                connection.query('INSERT INTO USERS SET ?', params, function (error2, results2, fields2) {
+                    if (error2) throw error2;
+                    res.end(JSON.stringify(results2));
+                });
+            }
+        });    
+    }
+    checkIfExists().catch(console.error);
+
+ });
 
  //SEND EMAIL
- app.get('/SEND/:email/:groupName', function (req, res) {
+ app.get('/SEND/:email/:groupName', function (req, res)  {
     var mailOptions = {
         from: 'luernese2018@gmail.com',
         to: req.params.email,
@@ -463,7 +499,6 @@ app.put('/GAMES', function (req, res) {
       });
 })
 
-//GET CURRENT ROUND
 app.get('/CURRENTROUND/', function (req, res) {
     connection.query("select settingValue from SETTINGS where settingName='currentRound'", function (error, results, fields) {
         if (error) throw error;
