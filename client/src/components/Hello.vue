@@ -2,7 +2,7 @@
   <div>
     <b-jumbotron header="March Insanity" lead="A New Type of NCAA Bracket Challenge">
       <b-btn v-b-modal.Instructions size="lg" variant="outline-primary">How It Works</b-btn>
-      <b-modal id="Instructions" size="lg" title="Instructions">
+      <b-modal id="Instructions" size="lg" title="Instructions" ok-only>
         <p> With March Insanity, busted brackets are a thing of the past. Your champion lost in the second round? No problem! 
         Your dark horse sweet 16 pick got blown out in the opening round? No big deal! We allow you to create a new bracket 
         at the end of every round, for a total of 6, and the scores of the brackets in this "Bracket Collection" are added 
