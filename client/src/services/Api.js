@@ -30,6 +30,10 @@ export default {
     return axios.get('/BRACKETCOLLECTIONS/'+bcid)
   },
 
+  getBracket : function (bid) {
+    return axios.get('/BRACKET/'+bid)
+  },
+
   createBracketCollection : async function(bcNum,userid,bcid) {
 
       await axios.post('/BRACKETCOLLECTIONS',{
