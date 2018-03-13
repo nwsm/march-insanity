@@ -85,7 +85,6 @@ export default {
     facebookSignInSuccess (response) {
       var vm = this
       FB.api('/me?fields=name,email', facebookUser => {
-        console.log(facebookUser)
         vm.$store.state.user = facebookUser
         vm.$store.state.user.userID = 'fb-' + facebookUser.id
         vm.$store.state.loggedIn = true
