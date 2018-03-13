@@ -47,7 +47,10 @@ export default {
       var vm = this
       var numGroups = 0
       var newNumGroups = 0
-      if (vm.newGroupName.indexOf(' ') == 0){
+      if (vm.newGroupName.indexOf(' ') >= 0){
+        vm.groupExistsError = "Group names cannot contain spaces!"
+      }
+      else {
         await api.getGroup(vm.newGroupName).then(async function(r){
           if (r.data.length == 0){
             await api.createGroup(vm.newGroupName, vm.$store.state.user.userID)
@@ -58,9 +61,6 @@ export default {
             vm.groupExistsError = "Group already exists!"
           }
         })
-      }
-      else {
-        vm.groupExistsError = "Group names cannot contain spaces!"
       }
       
       vm.updateUserGroups();
