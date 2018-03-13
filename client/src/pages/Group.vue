@@ -57,7 +57,13 @@ export default {
   
   created() {
     this.userID = this.$store.state.user.userID
-    this.groupName = this.$route.params.id
+    if (this.$route.params.id == undefined) {
+      this.groupName = this.$route.params.groupName
+    }
+    else {
+      this.groupName = this.$route.params.id
+    }
+    
   },
   mounted() {
     this.getGroupNameAndAdmin();
