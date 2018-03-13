@@ -7,7 +7,9 @@ const state = {
   loggedIn: false,
   signinProvider: null,
   name: null,
-  user: null
+  user: null,
+  bracket: null,
+  currentRound: 6
 }
 
 const mutations = {
@@ -25,6 +27,10 @@ const mutations = {
 
   setUser (u) {
     this.user = u
+  },
+
+  setBracket (b) {
+    this.bracket = b
   }
 }
 

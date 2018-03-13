@@ -49,8 +49,14 @@ export default {
       js.src = '//connect.facebook.net/en_US/sdk.js'
       fjs.parentNode.insertBefore(js, fjs)
     }(document, 'script', 'facebook-jssdk'))
+
+    this.updateRound()
   },
   methods: {
+    updateRound() {
+      var vm = this
+      api.getCurrentRound()
+    },
     googleSignInSuccess (googleUser) {
       var vm = this
       const authres = googleUser.getAuthResponse(true)

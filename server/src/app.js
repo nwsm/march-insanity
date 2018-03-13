@@ -497,4 +497,12 @@ app.put('/GAMES', function (req, res) {
           console.log('Email sent: ' + info.response);
         }
       });
- });
+})
+
+app.get('/CURRENTROUND/', function (req, res) {
+    connection.query("select settingValue from SETTINGS where settingName='currentRound'", function (error, results, fields) {
+        if (error) throw error;
+        res.end(JSON.stringify(results));
+        console.log('Request for Current Round');
+    });   
+})
