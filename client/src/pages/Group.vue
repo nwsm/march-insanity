@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="this.groupExists">
     <h1>Group Name: {{ groupName }}</h1>
     <div v-if="this.groupAdmin === this.userID">
       <router-link :to="{ name: 'Invite', params: { groupName: this.groupName, groupAdmin: this.groupAdmin } }"><b-btn>Invite new members</b-btn> </router-link>
@@ -37,6 +37,10 @@
       </table>
     </div>
   </div>
+  <div v-else>
+    <h1>Oops! This Group Doesn't Exist!</h1>
+    <router-link to="/">Main</router-link>
+  </div>
 </template>
 
 <script>
@@ -51,7 +55,8 @@ export default {
       groupAdmin: 0,
       notInGroup: false,
       entries: [],
-      BracketCollections: []
+      BracketCollections: [],
+      groupExists: false
     }
   },
   
@@ -74,10 +79,16 @@ export default {
   methods : { //put functions here
     getGroupNameAndAdmin: async function() {
         var admin = 0
+        var exists = false
         await api.getGroup(this.groupName).then(function(r){
+          if(r.data[0] != undefined) {
             admin = r.data[0].groupAdmin
+            exists = true
+          }
+            
         })
         this.groupAdmin = admin
+        this.groupExists = exists
     },
 
     checkMembership: async function() {
