@@ -61,6 +61,14 @@ export default {
     })
   },
 
+  updateUserGroup: async function (userID, gname, bc) {
+    await axios.put('/USERGROUP/', {
+      bracketCollection: bc,
+      groupName: gname,
+      userID: userID
+    })
+  },
+
   getGroup: function (gName) {
     return axios.get('/GROUPS/' + gName)
   },
@@ -69,8 +77,11 @@ export default {
     return axios.get('/USERGROUP/' + uID)
   },
 
+  getMembers: function (gname) {
+    return axios.get('/MEMBERS/' + gname)
+  },
+
   sendMail: function (email, gName) {
-    console.log('SM: ' + email + ' ' + gName)
     axios.get('/SEND/' + email + '/' + gName)
   }
 
