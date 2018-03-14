@@ -1,11 +1,12 @@
 <template>
   <div>
     <h1><b-badge variant="success">{{viewNames[currentView]}}</b-badge></h1>
-    <b-btn v-if="currentView>0" @click="incrementView(-1)"> &lt; </b-btn>
-    <div v-if="bracket.bracketType>$store.state.currentRound"><b-btn @click="saveBracket">Save</b-btn></div>
-    <div v-else><b-badge variant="warning">Too late to edit this bracket!</b-badge></div>
+    <div>
+      <b-btn @click="if(currentView>0)incrementView(-1)"> &lt; </b-btn>
+      <b-btn v-if="bracket.bracketType>$store.state.currentRound" variant="success" @click="saveBracket">Save</b-btn>
+      <b-btn @click="if(currentView<4)incrementView(1)"> &gt; </b-btn>
+    </div>
 
-    <b-btn v-if="currentView<4" @click="incrementView(1)"> &gt; </b-btn>
     <regionalBracket v-if="currentView==0" :games="midwest"></regionalBracket>
     <regionalBracket v-if="currentView==1" :games="west"></regionalBracket>
     <regionalBracket v-if="currentView==2" :games="east"></regionalBracket>
@@ -17,9 +18,11 @@
 </template>
 
 <script>
-import api from '../services/Api' //this file is where we define functions to call the API. Add functions to the file as needed
+import api from '../services/Api'
+import services from '../services/Services'
 import regionalBracket from '../components/RegionalBracket'
 import finalFour from '../components/FinalFour'
+
 export default {
   name: 'Bracket',
   data () {
@@ -44,15 +47,9 @@ export default {
     vm.getGames().then(function (r) {
       vm.splitGames(vm)
     }),
-    this.updateCurrentRound()
+    services.updateCurrentRound()
   },
   methods : { //put functions here
-    updateCurrentRound(){
-      var vm = this
-      api.getCurrentRound().then(function (r) {
-        vm.$store.state.currentRound = r.data[0].settingValue
-      })
-    },
     incrementView : function (x) {
       this.currentView += x
     },
