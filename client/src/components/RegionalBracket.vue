@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="games.length==15">
-      <main>
+      <main style="justify-content: center;">
         <ul>
             <template v-for="n in 8">
               <li>&nbsp;</li>
@@ -64,6 +64,7 @@
 
 <script>
 import api from '../services/Api'
+import services from '../services/Services'
 export default {
   name: 'RegionalBracket',
   data () {
@@ -76,17 +77,11 @@ export default {
   },
   mounted : function () {
     this.getTeams()
-    this.updateCurrentRound()
+    services.updateCurrentRound()
   },
   created : function () {
   },
   methods : { //put functions here
-    updateCurrentRound(){
-      var vm = this
-      api.getCurrentRound().then(function (r) {
-        vm.$store.state.currentRound = r.data[0].settingValue
-      })
-    },
     getTeams : async function () {
       var t = await api.getTeams()
       this.teams = t.data

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="games.length==7">
-      <main>
+      <main style="justify-content: center;">
         <ul>
             <li>&nbsp;</li>
 
@@ -22,14 +22,14 @@
 
             <li class="game game-top "   @click="setNext(games[6].gameID,games[4].team1,$store.state.bracket['Winner'+games[4].gameID])"> {{ games[6].team1 ? teams[games[6].team1].teamName : teams[$store.state.bracket['Winner'+games[4].gameID]] ? teams[$store.state.bracket['Winner'+games[4].gameID]].teamName : ""}}<span v-html=invis()></span></li>
             <li>&nbsp;</li>
-            <li class="game game-bottom" @click="setNext(games[6].gameID,games[4].team1,$store.state.bracket['Winner'+games[5].gameID])">{{ games[6].team1 ? teams[games[6].team2].teamName : teams[$store.state.bracket['Winner'+games[5].gameID]] ? teams[$store.state.bracket['Winner'+games[5].gameID]].teamName : ""}}<span v-html=invis()></span></li>
+            <li class="game game-bottom" @click="setNext(games[6].gameID,games[4].team2,$store.state.bracket['Winner'+games[5].gameID])">{{ games[6].team2 ? teams[games[6].team2].teamName : teams[$store.state.bracket['Winner'+games[5].gameID]] ? teams[$store.state.bracket['Winner'+games[5].gameID]].teamName : ""}}<span v-html=invis()></span></li>
 
             <li>&nbsp;</li>
         </ul>
         <ul>
             <li>&nbsp;</li>
 
-            <li class="game game-bottom" >{{ teams[games[6].winner] ? teams[games[6].winner].teamName : teams[$store.state.bracket['Winner'+games[6].gameID]] ? teams[$store.state.bracket['Winner'+games[5].gameID]].teamName : ""}}<span v-html=invis()></span></li>
+            <li class="game game-bottom" >{{ teams[games[6].winner] ? teams[games[6].winner].teamName : teams[$store.state.bracket['Winner'+games[6].gameID]] ? teams[$store.state.bracket['Winner'+games[6].gameID]].teamName : ""}}<span v-html=invis()></span></li>
 
             <li>&nbsp;</li>
         </ul>
@@ -40,6 +40,8 @@
 
 <script>
 import api from '../services/Api'
+import services from '../services/Services'
+
 export default {
   name: 'FinalFour',
   data () {
@@ -52,17 +54,11 @@ export default {
   },
   mounted : function () {
     this.getTeams()
-    this.updateCurrentRound()
+    services.updateCurrentRound()
   },
   created : function () {
   },
   methods : { //put functions here
-    updateCurrentRound(){
-      var vm = this
-      api.getCurrentRound().then(function (r) {
-        vm.$store.state.currentRound = r.data[0].settingValue
-      })
-    },
     getTeams : async function () {
       var t = await api.getTeams()
       this.teams = t.data

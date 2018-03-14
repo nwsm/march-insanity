@@ -55,7 +55,7 @@ export default {
   methods: {
     updateRound() {
       var vm = this
-      api.getCurrentRound()
+      services.updateCurrentRound()
     },
     googleSignInSuccess (googleUser) {
       var vm = this
@@ -75,7 +75,7 @@ export default {
           vm.$store.state.loggedIn = true
           vm.$store.state.signinProvider = 'Google'
         }
-        
+
       })
     },
     googleSignInError (error) {
@@ -93,7 +93,7 @@ export default {
         vm.$store.state.name = facebookUser.name
         api.loginFacebook(facebookUser)
       })
-      
+
     },
     facebookSignInError (error) {
       console.log(error)

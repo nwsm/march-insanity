@@ -1,7 +1,12 @@
 <template>
   <div>
+      <br>
       <div v-for="onebracket in brackets">
-        <router-link :to="{ name: 'Bracket', params: { bracket: onebracket } }"><b-btn>Bracket {{onebracket.bracketType}}</b-btn></router-link>
+        <router-link v-if="$store.state.currentRound==onebracket.bracketType-1" :to="{ name: 'Bracket', params: { bracket: onebracket } }"><b-btn>Bracket {{onebracket.bracketType}}</b-btn></router-link>
+      </div>
+      <br>
+      <div>
+        <h5>Come back when this round is over but the next hasn't started to set your next bracket!</h5>
       </div>
       <router-link to="/">Main</router-link>
   </div>
@@ -9,7 +14,7 @@
 
 <script>
 import api from '../services/Api' //this file is where we define functions to call the API. Add functions to the file as needed
-
+import services from '../services/Services'
 export default {
   name: 'BracketCollection',
   data () {
@@ -20,10 +25,11 @@ export default {
     }
   },
   created() {
-    this.bracketCollectionId = this.$route.params.bracketCollectionId
+    this.bracketCollectionId = this.$route.params.bracketCollectionId,
+    services.updateCurrentRound()
   },
   mounted : function () { //mounted happens when this page is loaded, so we grab the brackets here
-    this.updateCollectionAndBrackets();
+    this.updateCollectionAndBrackets()
   },
   methods : { //put functions here
     updateCollectionAndBrackets : function() {
