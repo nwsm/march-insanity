@@ -8,12 +8,11 @@
       <div>
         <h5>Come back when this round is over but the next hasn't started to set your next bracket!</h5>
       </div>
-      <router-link to="/">Main</router-link>
   </div>
 </template>
 
 <script>
-import api from '../services/Api' //this file is where we define functions to call the API. Add functions to the file as needed
+import api from '../services/Api'
 import services from '../services/Services'
 export default {
   name: 'BracketCollection',
@@ -24,19 +23,19 @@ export default {
       bracketCollectionId: 0
     }
   },
-  created() {
-    this.bracketCollectionId = this.$route.params.bracketCollectionId,
+  created () {
+    this.bracketCollectionId = this.$route.params.bracketCollectionId
     services.updateCurrentRound()
   },
-  mounted : function () { //mounted happens when this page is loaded, so we grab the brackets here
+  mounted: function () {
     this.updateCollectionAndBrackets()
   },
-  methods : { //put functions here
-    updateCollectionAndBrackets : function() {
+  methods: {
+    updateCollectionAndBrackets: function () {
       this.brackets = []
 
       var vm = this
-      api.getBracketCollection(vm.bracketCollectionId).then(function(r){
+      api.getBracketCollection(vm.bracketCollectionId).then(function (r) {
         vm.bracketCollection = r.data[0]
         api.getBracket(vm.bracketCollection.Bracket1ID).then(function (br) {
           vm.brackets.push(br.data[0])
@@ -61,7 +60,6 @@ export default {
         api.getBracket(vm.bracketCollection.Bracket6ID).then(function (br) {
           vm.brackets.push(br.data[0])
         })
-
       })
     }
   }

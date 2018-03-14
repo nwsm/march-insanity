@@ -1,32 +1,35 @@
 import axios from 'axios'
 import store from '../store/index'
+import config from '../config/config'
+
+var path = config.apiPath
 
 export default {
   getGroups : function () {
-    return axios.get('/GROUPS')
+    return axios.get(path+'/GROUPS')
   },
   saveBracket : function () {
-    return axios.put('/BRACKETS/', store.state.bracket)
+    return axios.put(path+'/BRACKETS/', store.state.bracket)
   },
   getUser : function (id) {
-    return axios.get('/USERS/' + id)
+    return axios.get(path+'/USERS/' + id)
   },
 
   getTeams : function () {
-    return axios.get('/TEAMS')
+    return axios.get(path+'/TEAMS')
   },
   getGames : function () {
-    return axios.get('/GAMES/')
+    return axios.get(path+'/GAMES/')
   },
   getCurrentRound : function () {
-    return axios.get('/CURRENTROUND/')
+    return axios.get(path+'/CURRENTROUND/')
   },
 
   getAppAdmins : function () {
-    return axios.get('/ADMINS/')
-  }, 
+    return axios.get(path+'/ADMINS/')
+  },
   insertUser : function (id,em,fn) {
-    return axios.post('/USERS/',{
+    return axios.post(path+'/USERS/',{
       userID:id,
       email:em,
       name:fn
@@ -34,27 +37,27 @@ export default {
   },
 
   loginGoogle : function (id) {
-    return axios.post('/auth/google/',{ token : id })
+    return axios.post(path+'/auth/google/',{ token : id })
   },
 
   loginFacebook : function (facebookUser) {
-    return axios.post('/auth/facebook/', {fbID: facebookUser.id, fbEmail: facebookUser.email, fbName: facebookUser.name})
+    return axios.post(path+'/auth/facebook/', {fbID: facebookUser.id, fbEmail: facebookUser.email, fbName: facebookUser.name})
   },
 
   getBracketCollection : function (bcid) {
-    return axios.get('/BRACKETCOLLECTIONS/'+bcid)
+    return axios.get(path+'/BRACKETCOLLECTIONS/'+bcid)
   },
 
   getBracket : function (bid) {
-    return axios.get('/BRACKET/'+bid)
+    return axios.get(path+'/BRACKET/'+bid)
   },
 
   createBracketCollection : async function(bcNum,userid,bcid) {
 
-      await axios.post('/BRACKETCOLLECTIONS',{
+      await axios.post(path+'/BRACKETCOLLECTIONS',{
         CollectionID : bcid
       })
-      await axios.put('/USERS/UPDATEBC', {
+      await axios.put(path+'/USERS/UPDATEBC', {
         userID : userid,
         bracketCollectionID : bcid,
         num : bcNum
@@ -65,7 +68,7 @@ export default {
   },
 
   createGroup: async function (NewGroupName, userid) {
-    await axios.post('/GROUPS/', {
+    await axios.post(path+'/GROUPS/', {
       groupName: NewGroupName,
       groupAdmin: userid
     })
@@ -74,14 +77,14 @@ export default {
   },
 
   createUserGroup: async function (gName, uID) {
-    await axios.post('/USERGROUP/', {
+    await axios.post(path+'/USERGROUP/', {
       groupName: gName,
       userID: uID
     })
   },
 
   updateUserGroup: async function (userID, gname, bc) {
-    await axios.put('/USERGROUP/', {
+    await axios.put(path+'/USERGROUP/', {
       bracketCollection: bc,
       groupName: gname,
       userID: userID
@@ -89,19 +92,19 @@ export default {
   },
 
   getGroup: function (gName) {
-    return axios.get('/GROUPS/' + gName)
+    return axios.get(path+'/GROUPS/' + gName)
   },
 
   getUserGroups: function (uID) {
-    return axios.get('/USERGROUP/' + uID)
+    return axios.get(path+'/USERGROUP/' + uID)
   },
 
   getMembers: function (gname) {
-    return axios.get('/MEMBERS/' + gname)
+    return axios.get(path+'/MEMBERS/' + gname)
   },
 
   sendMail: function (email, gName) {
-    axios.get('/SEND/' + email + '/' + gName)
+    axios.get(path+'/SEND/' + email + '/' + gName)
   }
 
 }

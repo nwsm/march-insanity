@@ -39,7 +39,7 @@ export default new Router({
       component: BracketCollections
     },
     {
-      path: '/BracketCollection/:id',
+      path: '/BracketCollection/:bracketCollectionId',
       name: 'BracketCollection',
       component: BracketCollection
     },
