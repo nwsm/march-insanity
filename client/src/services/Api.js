@@ -21,6 +21,10 @@ export default {
   getCurrentRound : function () {
     return axios.get('/CURRENTROUND/')
   },
+
+  getAppAdmins : function () {
+    return axios.get('/ADMINS/')
+  }, 
   insertUser : function (id,em,fn) {
     return axios.post('/USERS/',{
       userID:id,

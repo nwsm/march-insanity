@@ -499,10 +499,20 @@ app.put('/GAMES', function (req, res) {
       });
 })
 
+//GET CURRENT ROUND
 app.get('/CURRENTROUND/', function (req, res) {
     connection.query("select settingValue from SETTINGS where settingName='currentRound'", function (error, results, fields) {
         if (error) throw error;
         res.end(JSON.stringify(results));
         console.log('Request for Current Round');
-    });   
+    });
+})
+
+//GET APP ADMINS
+app.get('/ADMINS/', function (req, res) {
+    connection.query("select settingValue from SETTINGS where settingName='AppAdmin'", function (error, results, fields) {
+        if (error) throw error;
+        res.end(JSON.stringify(results));
+        console.log('Request for App Admins');
+    });
 })
