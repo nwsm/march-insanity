@@ -2,7 +2,16 @@ import axios from 'axios'
 import store from '../store/index'
 import config from '../config/config'
 
-var path = config.apiPath
+var path
+
+if(process.env.NODE_ENV=='development'){
+  path = config.apiPath.development
+}
+else{
+  path = config.apiPath.production
+}
+
+console.log(path)
 
 export default {
   getGroups : function () {
@@ -37,6 +46,8 @@ export default {
   },
 
   loginGoogle : function (id) {
+    console.log("henlo")
+    console.log(path)
     return axios.post(path+'/auth/google/',{ token : id })
   },
 

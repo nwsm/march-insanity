@@ -1,4 +1,7 @@
 'use strict'
 module.exports = {
-  apiPath : "http://localhost:8081"
+  apiPath : {
+    development: "http://localhost:8081",
+    production: ""
+  }
 }
