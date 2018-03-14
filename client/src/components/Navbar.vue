@@ -22,6 +22,7 @@
 
 <script>
 import api from '../services/Api'
+import services from '../services/Services'
 /* eslint-disable */
 export default {
   data: () => ({

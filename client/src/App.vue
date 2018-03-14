@@ -7,6 +7,8 @@
     <div v-else>
       Sign in through Google or Facebook to get started!
     </div>
+    <br>
+    <router-link v-if="$route.name!='Main'" to="/">Main</router-link>
 
   </div>
 </template>

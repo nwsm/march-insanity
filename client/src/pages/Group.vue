@@ -8,6 +8,7 @@
       <b-btn @click="joinGroup">Join</b-btn>
     </div>
     <div v-else>
+      <br>
       <h2>Choose your bracket collection for the group:</h2>
       <form>
         <div v-for="bc in this.BracketCollections">
@@ -15,8 +16,10 @@
         </div>
       </form>
       <b-btn @click="submitBCChoice">Submit Choice</b-btn>
-    </div>  
+    </div>
+    <br>
     <router-link to="/Groups">Back to your groups</router-link>
+    <br>
     <div v-if="!notInGroup">
       <h2>Group Standings</h2>
       <table>
@@ -44,7 +47,7 @@
 </template>
 
 <script>
-import api from '../services/Api' //this file is where we define functions to call the API. Add functions to the file as needed
+import api from '../services/Api'
 
 export default {
   name: 'Group',
@@ -59,110 +62,107 @@ export default {
       groupExists: false
     }
   },
-  
-  created() {
+
+  created () {
     this.userID = this.$store.state.user.userID
-    if (this.$route.params.id == undefined) {
+    if (this.$route.params.id === undefined) {
       this.groupName = this.$route.params.groupName
-    }
-    else {
+    } else {
       this.groupName = this.$route.params.id
     }
-    
   },
-  mounted() {
-    this.getGroupNameAndAdmin();
-    this.checkMembership();
-    this.getEntries();
-    this.getUserBCs();
+  mounted () {
+    this.getGroupNameAndAdmin()
+    this.checkMembership()
+    this.getEntries()
+    this.getUserBCs()
   },
-  methods : { //put functions here
-    getGroupNameAndAdmin: async function() {
-        var admin = 0
-        var exists = false
-        await api.getGroup(this.groupName).then(function(r){
-          if(r.data[0] != undefined) {
-            admin = r.data[0].groupAdmin
-            exists = true
+  methods: {
+    getGroupNameAndAdmin: async function () {
+      var admin = 0
+      var exists = false
+      await api.getGroup(this.groupName).then(function (r) {
+        if (r.data[0] !== undefined) {
+          admin = r.data[0].groupAdmin
+          exists = true
+        }
+      })
+      this.groupAdmin = admin
+      this.groupExists = exists
+    },
+
+    checkMembership: async function () {
+      var notInGroup = true
+      var groupName = this.groupName
+      await api.getUserGroups(this.userID).then(function (r) {
+        for (var i = 0; i < r.data.length; i++) {
+          if (r.data[i].groupName === groupName) {
+            notInGroup = false
+            break
           }
-            
-        })
-        this.groupAdmin = admin
-        this.groupExists = exists
+        }
+      })
+
+      if (notInGroup) {
+        this.notInGroup = true
+      } else {
+        this.notInGroup = false
+      }
     },
 
-    checkMembership: async function() {
-        var notInGroup = true
-        var groupName = this.groupName
-        await api.getUserGroups(this.userID).then(function(r){
-           for (var i = 0; i < r.data.length; i++){
-               if (r.data[i].groupName == groupName) {
-                   notInGroup = false
-                   break
-               }
-           }
-        })
-
-        if (notInGroup) {
-            this.notInGroup = true
-        }
-        else {
-            this.notInGroup = false
-        }
+    joinGroup: async function () {
+      await api.createUserGroup(this.groupName, this.userID).then(
+        this.checkMembership()
+      )
+      this.getEntries()
     },
 
-   joinGroup: async function() {
-       await api.createUserGroup(this.groupName, this.userID).then(
-           this.checkMembership())
-       this.getEntries() 
-   },
-
-   getEntries: async function() {
+    getEntries: async function () {
       this.entries = []
       var groupName = this.groupName
       var vm = this
-      await api.getMembers(groupName).then(function(r){
-        for (var i = 0; i < r.data.length; i++){
-            vm.entries.push({userID: r.data[i].userID, bracketCollection: r.data[i].bracketCollection, Score: 0})
+      await api.getMembers(groupName).then(function (r) {
+        for (var i = 0; i < r.data.length; i++) {
+          vm.entries.push({userID: r.data[i].userID, bracketCollection: r.data[i].bracketCollection, Score: 0})
         }
       })
       for (var i = 0; i < vm.entries.length; i++) {
-        await api.getUser(vm.entries[i].userID).then(function(r) {
-           vm.entries[i].userID = r.data[0].name
+        await api.getUser(vm.entries[i].userID).then(function (r) {
+          vm.entries[i].userID = r.data[0].name
         })
       }
-   },
+    },
 
-   getUserBCs: async function() {
-     var vm = this
-     await api.getUser(this.userID).then(function(r) {
-       if (r.data[0].bracketCollection1 != null){
-         vm.BracketCollections.push({bcID: r.data[0].bracketCollection1})
-       }
-       if (r.data[0].bracketCollection2 != null){
-         vm.BracketCollections.push({bcID: r.data[0].bracketCollection2})
-       }
-       if (r.data[0].bracketCollection3 != null){
-         vm.BracketCollections.push({bcID: r.data[0].bracketCollection3})
-       }
-     }) 
-   },
+    getUserBCs: async function () {
+      var vm = this
+      await api.getUser(this.userID).then(function (r) {
+        if (r.data[0].bracketCollection1 != null) {
+          vm.BracketCollections.push({bcID: r.data[0].bracketCollection1})
+        }
+        if (r.data[0].bracketCollection2 != null) {
+          vm.BracketCollections.push({bcID: r.data[0].bracketCollection2})
+        }
+        if (r.data[0].bracketCollection3 != null) {
+          vm.BracketCollections.push({bcID: r.data[0].bracketCollection3})
+        }
+      })
+    },
 
-   submitBCChoice: function() {
-      var bcs = document.getElementsByName('BracketCollection');
-      var bcID = null;
-      for(var i = 0; i < bcs.length; i++){
-          if(bcs[i].checked){
-              bcID = bcs[i].value;
-          }
+    submitBCChoice: function () {
+      var bcs = document.getElementsByName('BracketCollection')
+      var bcID = null
+      for (var i = 0; i < bcs.length; i++) {
+        if (bcs[i].checked) {
+          bcID = bcs[i].value
+        }
       }
-      
+
       if (bcID != null) {
         api.updateUserGroup(this.userID, this.groupName, bcID)
       }
 
-      this.getEntries();
-   }
+      this.getEntries()
+    }
   }
 }
 </script>

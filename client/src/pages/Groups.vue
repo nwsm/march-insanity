@@ -1,21 +1,28 @@
 <template>
   <div>
     <h1>Your Groups:</h1>
-    <div v-for="group in Groups">
-       <router-link :to="{ name: 'Group', params: { id: group.groupName, groupAdmin: group.groupAdmin } }"><b-btn> {{group.groupName}}</b-btn></router-link>
-    </div>
-    <input v-model="newGroupName" placeholder="New Group Name">
-      <p>{{ groupExistsError}}</p>
+    <template v-for="group in Groups">
+       <router-link :to="{ name: 'Group', params: { id: group.groupName, groupAdmin: group.groupAdmin } }"><b-btn variant="outline-primary"> {{group.groupName}}</b-btn></router-link>
+    </template>
     <div>
-      <b-btn @click="createGroup">Create Group</b-btn>
+      <br>
+      <b-row>
+        <b-col></b-col>
+        <b-col >
+          <b-form-input v-model="newGroupName" placeholder="New Group Name"></b-form-input>
+          <p>{{ groupExistsError}}</p>
+        </b-col>
+        <b-col></b-col>
+      </b-row>
     </div>
-    <h1>{{ msg }}</h1>
-      <router-link to="/">Main</router-link>
+    <div>
+      <b-btn variant="primary" @click="createGroup">Create Group</b-btn>
+    </div>
   </div>
 </template>
 
 <script>
-import api from '../services/Api' //this file is where we define functions to call the API. Add functions to the file as needed
+import api from '../services/Api'
 
 export default {
   name: 'Groups',
@@ -26,45 +33,39 @@ export default {
       groupExistsError: ''
     }
   },
-  mounted : function () { //mounted happens when this page is loaded, so we grab the brackets here
-    this.updateUserGroups();
+  mounted: function () {
+    this.updateUserGroups()
   },
-  methods : { //put functions here
-    updateUserGroups : function() {
+  methods: {
+    updateUserGroups: function () {
       this.Groups = []
 
       var vm = this
-      api.getUserGroups(vm.$store.state.user.userID).then(function(r){
-        for (var i = 0; i < r.data.length; i++){
-          api.getGroup(r.data[i].groupName).then(function(R) {
+      api.getUserGroups(vm.$store.state.user.userID).then(function (r) {
+        for (var i = 0; i < r.data.length; i++) {
+          api.getGroup(r.data[i].groupName).then(function (R) {
             vm.Groups.push(R.data[0])
           })
         }
       })
     },
 
-    createGroup : async function() {
+    createGroup: async function () {
       var vm = this
-      var numGroups = 0
-      var newNumGroups = 0
-      if (vm.newGroupName.indexOf(' ') >= 0){
-        vm.groupExistsError = "Group names cannot contain spaces!"
-      }
-      else {
-        await api.getGroup(vm.newGroupName).then(async function(r){
-          if (r.data.length == 0){
+      if (vm.newGroupName.indexOf(' ') >= 0) {
+        vm.groupExistsError = 'Group names cannot contain spaces!'
+      } else {
+        await api.getGroup(vm.newGroupName).then(async function (r) {
+          if (r.data.length === 0) {
             await api.createGroup(vm.newGroupName, vm.$store.state.user.userID)
-            vm.groupExistsError = ""
-            api.createUserGroup(vm.newGroupName,vm.$store.state.user.userID)
-          }
-          else {
-            vm.groupExistsError = "Group already exists!"
+            vm.groupExistsError = ''
+            api.createUserGroup(vm.newGroupName, vm.$store.state.user.userID)
+          } else {
+            vm.groupExistsError = 'Group already exists!'
           }
         })
       }
-      
-      vm.updateUserGroups();
-      
+      vm.updateUserGroups()
     }
   }
 }

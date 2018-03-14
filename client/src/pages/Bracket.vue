@@ -2,9 +2,9 @@
   <div>
     <h1><b-badge variant="success">{{viewNames[currentView]}}</b-badge></h1>
     <div>
-      <b-btn @click="if(currentView>0)incrementView(-1)"> &lt; </b-btn>
+      <b-btn @click="incrementView(-1)"> &lt; </b-btn>
       <b-btn v-if="bracket.bracketType>$store.state.currentRound" variant="success" @click="saveBracket">Save</b-btn>
-      <b-btn @click="if(currentView<4)incrementView(1)"> &gt; </b-btn>
+      <b-btn @click="incrementView(1)"> &gt; </b-btn>
     </div>
 
     <regionalBracket v-if="currentView==0" :games="midwest"></regionalBracket>
@@ -12,8 +12,6 @@
     <regionalBracket v-if="currentView==2" :games="east"></regionalBracket>
     <regionalBracket v-if="currentView==3" :games="south"></regionalBracket>
     <finalFour v-if="currentView==4" :games="finalFour"></finalFour>
-
-    <router-link to="/">Main</router-link>
   </div>
 </template>
 
@@ -38,32 +36,37 @@ export default {
       viewNames: ['Midwest','West','East','South','Final Four']
     }
   },
-  created() {
+  created () {
     this.bracket = this.$route.params.bracket
     this.$store.state.bracket = this.bracket
   },
-  mounted : function () {
+  mounted: function () {
     var vm = this
     vm.getGames().then(function (r) {
       vm.splitGames(vm)
     }),
     services.updateCurrentRound()
   },
-  methods : { //put functions here
+  methods: { //put functions here
     incrementView : function (x) {
       this.currentView += x
+
+      if(this.currentView<0)
+        this.currentView=0
+      if(this.currentView>4)
+        this.currentView=4
     },
-    getGames : async function () {
+    getGames: async function () {
       var x = await api.getGames()
       this.games = x.data
       return
     },
-    saveBracket : function () {
+    saveBracket: function () {
       api.saveBracket()
     },
     splitGames : function (vm) {
       for(var i = 0; i < vm.games.length; i++){
-        if(vm.games[i].gameID<9) //round of 64
+        if(vm.games[i].gameID<9)
           vm.midwest.push(vm.games[i])
         else if(vm.games[i].gameID<17)
           vm.west.push(vm.games[i])
@@ -71,7 +74,7 @@ export default {
           vm.east.push(vm.games[i])
         else if(vm.games[i].gameID<33)
           vm.south.push(vm.games[i])
-        else if(vm.games[i].gameID<37) //round of 32
+        else if(vm.games[i].gameID<37)
           vm.midwest.push(vm.games[i])
         else if(vm.games[i].gameID<41)
           vm.west.push(vm.games[i])
@@ -79,7 +82,7 @@ export default {
           vm.east.push(vm.games[i])
         else if(vm.games[i].gameID<49)
           vm.south.push(vm.games[i])
-        else if(vm.games[i].gameID<51) //sweet sixteen
+        else if(vm.games[i].gameID<51)
           vm.midwest.push(vm.games[i])
         else if(vm.games[i].gameID<53)
           vm.west.push(vm.games[i])
@@ -87,7 +90,7 @@ export default {
           vm.east.push(vm.games[i])
         else if(vm.games[i].gameID<57)
           vm.south.push(vm.games[i])
-        else if(vm.games[i].gameID==57){ //elite eight
+        else if(vm.games[i].gameID==57){
           vm.midwest.push(vm.games[i])
           vm.finalFour.push(vm.games[i])
         }
@@ -103,7 +106,7 @@ export default {
           vm.south.push(vm.games[i])
           vm.finalFour.push(vm.games[i])
         }
-        else if(vm.games[i].gameID==61) //final four
+        else if(vm.games[i].gameID==61)
           vm.finalFour.push(vm.games[i])
         else if(vm.games[i].gameID==62)
           vm.finalFour.push(vm.games[i])
