@@ -5,31 +5,31 @@
         <ul>
             <li>&nbsp;</li>
 
-            <li class="game game-top "   @click="setNext(games[4].gameID,games[4].team1,$store.state.bracket['Winner'+games[0].gameID])"> {{ games[4].team1 ? teams[games[4].team1].teamName : teams[$store.state.bracket['Winner'+games[0].gameID]] ? teams[$store.state.bracket['Winner'+games[0].gameID]].teamName : ""}}<span v-html=invis()></span></li>
+            <li class="game game-top teamHover"   @click="setNext(games[4].gameID,games[4].team1,$store.state.bracket['Winner'+games[0].gameID])"> {{ games[4].team1 ? teams[games[4].team1].teamName : teams[$store.state.bracket['Winner'+games[0].gameID]] ? teams[$store.state.bracket['Winner'+games[0].gameID]].teamName : ""}}<span v-html=invis()></span></li>
             <li>&nbsp;</li>
-            <li class="game game-bottom" @click="setNext(games[4].gameID,games[4].team1,$store.state.bracket['Winner'+games[1].gameID])">{{ games[4].team1 ? teams[games[4].team2].teamName : teams[$store.state.bracket['Winner'+games[1].gameID]] ? teams[$store.state.bracket['Winner'+games[1].gameID]].teamName : ""}}<span v-html=invis()></span></li>
+            <li class="game game-bottom teamHover" @click="setNext(games[4].gameID,games[4].team1,$store.state.bracket['Winner'+games[1].gameID])">{{ games[4].team1 ? teams[games[4].team2].teamName : teams[$store.state.bracket['Winner'+games[1].gameID]] ? teams[$store.state.bracket['Winner'+games[1].gameID]].teamName : ""}}<span v-html=invis()></span></li>
 
             <li>&nbsp;</li>
 
-            <li class="game game-top "   @click="setNext(games[5].gameID,games[5].team2,$store.state.bracket['Winner'+games[2].gameID])">{{ games[5].team1 ? teams[games[5].team1].teamName : teams[$store.state.bracket['Winner'+games[2].gameID]] ? teams[$store.state.bracket['Winner'+games[2].gameID]].teamName : ""}}<span v-html=invis()></span></li>
+            <li class="game game-top teamHover"   @click="setNext(games[5].gameID,games[5].team2,$store.state.bracket['Winner'+games[2].gameID])">{{ games[5].team1 ? teams[games[5].team1].teamName : teams[$store.state.bracket['Winner'+games[2].gameID]] ? teams[$store.state.bracket['Winner'+games[2].gameID]].teamName : ""}}<span v-html=invis()></span></li>
             <li>&nbsp;</li>
-            <li class="game game-bottom" @click="setNext(games[5].gameID,games[5].team2,$store.state.bracket['Winner'+games[3].gameID])">{{ games[5].team1 ? teams[games[5].team2].teamName : teams[$store.state.bracket['Winner'+games[3].gameID]] ? teams[$store.state.bracket['Winner'+games[3].gameID]].teamName : ""}}<span v-html=invis()></span></li>
-
-            <li>&nbsp;</li>
-        </ul>
-        <ul>
-            <li>&nbsp;</li>
-
-            <li class="game game-top "   @click="setNext(games[6].gameID,games[4].team1,$store.state.bracket['Winner'+games[4].gameID])"> {{ games[6].team1 ? teams[games[6].team1].teamName : teams[$store.state.bracket['Winner'+games[4].gameID]] ? teams[$store.state.bracket['Winner'+games[4].gameID]].teamName : ""}}<span v-html=invis()></span></li>
-            <li>&nbsp;</li>
-            <li class="game game-bottom" @click="setNext(games[6].gameID,games[4].team2,$store.state.bracket['Winner'+games[5].gameID])">{{ games[6].team2 ? teams[games[6].team2].teamName : teams[$store.state.bracket['Winner'+games[5].gameID]] ? teams[$store.state.bracket['Winner'+games[5].gameID]].teamName : ""}}<span v-html=invis()></span></li>
+            <li class="game game-bottom teamHover" @click="setNext(games[5].gameID,games[5].team2,$store.state.bracket['Winner'+games[3].gameID])">{{ games[5].team1 ? teams[games[5].team2].teamName : teams[$store.state.bracket['Winner'+games[3].gameID]] ? teams[$store.state.bracket['Winner'+games[3].gameID]].teamName : ""}}<span v-html=invis()></span></li>
 
             <li>&nbsp;</li>
         </ul>
         <ul>
             <li>&nbsp;</li>
 
-            <li class="game game-bottom" >{{ teams[games[6].winner] ? teams[games[6].winner].teamName : teams[$store.state.bracket['Winner'+games[6].gameID]] ? teams[$store.state.bracket['Winner'+games[6].gameID]].teamName : ""}}<span v-html=invis()></span></li>
+            <li class="game game-top teamHover"   @click="setNext(games[6].gameID,games[4].team1,$store.state.bracket['Winner'+games[4].gameID])"> {{ games[6].team1 ? teams[games[6].team1].teamName : teams[$store.state.bracket['Winner'+games[4].gameID]] ? teams[$store.state.bracket['Winner'+games[4].gameID]].teamName : ""}}<span v-html=invis()></span></li>
+            <li>&nbsp;</li>
+            <li class="game game-bottom teamHover" @click="setNext(games[6].gameID,games[4].team2,$store.state.bracket['Winner'+games[5].gameID])">{{ games[6].team2 ? teams[games[6].team2].teamName : teams[$store.state.bracket['Winner'+games[5].gameID]] ? teams[$store.state.bracket['Winner'+games[5].gameID]].teamName : ""}}<span v-html=invis()></span></li>
+
+            <li>&nbsp;</li>
+        </ul>
+        <ul>
+            <li>&nbsp;</li>
+
+            <li class="game game-bottom teamHover" >{{ teams[games[6].winner] ? teams[games[6].winner].teamName : teams[$store.state.bracket['Winner'+games[6].gameID]] ? teams[$store.state.bracket['Winner'+games[6].gameID]].teamName : ""}}<span v-html=invis()></span></li>
 
             <li>&nbsp;</li>
         </ul>
@@ -124,5 +124,9 @@ export default {
 
   .game-bottom {
     border-top:1px solid #aaa;
+  }
+
+  .teamHover {
+    cursor: pointer;
   }
 </style>

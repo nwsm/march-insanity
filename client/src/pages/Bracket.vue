@@ -90,15 +90,17 @@ export default {
           vm.east.push(vm.games[i])
         else if(vm.games[i].gameID<57)
           vm.south.push(vm.games[i])
+
         else if(vm.games[i].gameID==57){
           vm.midwest.push(vm.games[i])
           vm.finalFour.push(vm.games[i])
         }
-        else if(vm.games[i].gameID==58){
+
+        else if(vm.games[i].gameID==59){
           vm.west.push(vm.games[i])
           vm.finalFour.push(vm.games[i])
         }
-        else if(vm.games[i].gameID==59){
+        else if(vm.games[i].gameID==58){
           vm.east.push(vm.games[i])
           vm.finalFour.push(vm.games[i])
         }

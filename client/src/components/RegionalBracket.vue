@@ -6,9 +6,9 @@
             <template v-for="n in 8">
               <li>&nbsp;</li>
 
-              <li class="game game-top"     @click="setNext(games[n-1].gameID,games[n-1].team1,games[n-1].gameID,games[n-1].team1)" >{{teams[games[n-1].team1] ? teams[games[n-1].team1].teamName : "Team"}}</li>
+              <li class="game game-top teamHover"     @click="setNext(games[n-1].gameID,games[n-1].team1,games[n-1].gameID,games[n-1].team1)" >{{teams[games[n-1].team1] ? teams[games[n-1].team1].teamName : "Team"}}</li>
               <li>&nbsp;</li>
-              <li class="game game-bottom " @click="setNext(games[n-1].gameID,games[n-1].team2,games[n-1].gameID,games[n-1].team2)" >{{teams[games[n-1].team2] ? teams[games[n-1].team2].teamName : "Team"}}</li>
+              <li class="game game-bottom teamHover" @click="setNext(games[n-1].gameID,games[n-1].team2,games[n-1].gameID,games[n-1].team2)" >{{teams[games[n-1].team2] ? teams[games[n-1].team2].teamName : "Team"}}</li>
 
             </template>
             <li>&nbsp;</li>
@@ -18,9 +18,9 @@
             <template v-for="n in 4">
               <li>&nbsp;</li>
 
-              <li  class="game game-top"    @click="setNext(games[n + 7].gameID,games[n + 7].team1,$store.state.bracket['Winner'+games[n*2-2].gameID])">{{ games[n + 7].team1 ? teams[games[n + 7].team1].teamName : teams[$store.state.bracket['Winner'+games[n*2-2].gameID]] ? teams[$store.state.bracket['Winner'+games[n*2-2].gameID]].teamName : ""}}<span v-html=invis()></span></li>
+              <li  class="game game-top teamHover"    @click="setNext(games[n + 7].gameID,games[n + 7].team1,$store.state.bracket['Winner'+games[n*2-2].gameID])">{{ games[n + 7].team1 ? teams[games[n + 7].team1].teamName : teams[$store.state.bracket['Winner'+games[n*2-2].gameID]] ? teams[$store.state.bracket['Winner'+games[n*2-2].gameID]].teamName : ""}}<span v-html=invis()></span></li>
               <li>&nbsp;</li>
-              <li  class="game game-bottom" @click="setNext(games[n +7].gameID,games[n + 7].team2,$store.state.bracket['Winner'+games[n*2-1].gameID])">{{ games[n + 7].team2 ? teams[games[n + 7].team2].teamName : teams[$store.state.bracket['Winner'+games[n*2-1].gameID]] ? teams[$store.state.bracket['Winner'+games[n*2-1].gameID]].teamName : "" }}<span v-html=invis()></span></li>
+              <li  class="game game-bottom teamHover" @click="setNext(games[n +7].gameID,games[n + 7].team2,$store.state.bracket['Winner'+games[n*2-1].gameID])">{{ games[n + 7].team2 ? teams[games[n + 7].team2].teamName : teams[$store.state.bracket['Winner'+games[n*2-1].gameID]] ? teams[$store.state.bracket['Winner'+games[n*2-1].gameID]].teamName : "" }}<span v-html=invis()></span></li>
 
             </template>
 
@@ -33,9 +33,9 @@
             <template v-for="n in 2">
               <li>&nbsp;</li>
 
-              <li class="game game-top "    @click="setNext(games[n + 11].gameID,games[n + 11].team1,$store.state.bracket['Winner'+games[n*2+6].gameID])">{{ games[n + 11].team1 ? teams[games[n + 11].team1].teamName : teams[$store.state.bracket['Winner'+games[n*2+6].gameID]] ? teams[$store.state.bracket['Winner'+games[n*2+6].gameID]].teamName : ""}}<span v-html=invis()></span></li>
+              <li class="game game-top teamHover"    @click="setNext(games[n + 11].gameID,games[n + 11].team1,$store.state.bracket['Winner'+games[n*2+6].gameID])">{{ games[n + 11].team1 ? teams[games[n + 11].team1].teamName : teams[$store.state.bracket['Winner'+games[n*2+6].gameID]] ? teams[$store.state.bracket['Winner'+games[n*2+6].gameID]].teamName : ""}}<span v-html=invis()></span></li>
               <li>&nbsp;</li>
-              <li  class="game game-bottom" @click="setNext(games[n + 11].gameID,games[n + 11].team2,$store.state.bracket['Winner'+games[n*2+7].gameID])">{{ games[n + 11].team2 ? teams[games[n + 11].team2].teamName : teams[$store.state.bracket['Winner'+games[n*2+7].gameID]] ? teams[$store.state.bracket['Winner'+games[n*2+7].gameID]].teamName : "" }}<span v-html=invis()></span></li>
+              <li  class="game game-bottom teamHover" @click="setNext(games[n + 11].gameID,games[n + 11].team2,$store.state.bracket['Winner'+games[n*2+7].gameID])">{{ games[n + 11].team2 ? teams[games[n + 11].team2].teamName : teams[$store.state.bracket['Winner'+games[n*2+7].gameID]] ? teams[$store.state.bracket['Winner'+games[n*2+7].gameID]].teamName : "" }}<span v-html=invis()></span></li>
             </template>
 
             <li>&nbsp;</li>
@@ -43,15 +43,15 @@
         <ul>
             <li>&nbsp;</li>
 
-            <li class="game game-top "   @click="setNext(games[14].gameID,games[14].team1,$store.state.bracket['Winner'+games[12].gameID])">   {{ games[14].team1 ? teams[games[14].team1].teamName : teams[$store.state.bracket['Winner'+games[12].gameID]] ? teams[$store.state.bracket['Winner'+games[12].gameID]].teamName : ""}}<span v-html=invis()></span></li>
+            <li class="game game-top teamHover"   @click="setNext(games[14].gameID,games[14].team1,$store.state.bracket['Winner'+games[12].gameID])">   {{ games[14].team1 ? teams[games[14].team1].teamName : teams[$store.state.bracket['Winner'+games[12].gameID]] ? teams[$store.state.bracket['Winner'+games[12].gameID]].teamName : ""}}<span v-html=invis()></span></li>
             <li>&nbsp;</li>
-            <li class="game game-bottom" @click="setNext(games[14].gameID,games[14].team1,$store.state.bracket['Winner'+games[13].gameID])">{{ games[14].team1 ? teams[games[14].team2].teamName : teams[$store.state.bracket['Winner'+games[13].gameID]] ? teams[$store.state.bracket['Winner'+games[13].gameID]].teamName : ""}}<span v-html=invis()></span></li>
+            <li class="game game-bottom teamHover" @click="setNext(games[14].gameID,games[14].team1,$store.state.bracket['Winner'+games[13].gameID])">{{ games[14].team1 ? teams[games[14].team2].teamName : teams[$store.state.bracket['Winner'+games[13].gameID]] ? teams[$store.state.bracket['Winner'+games[13].gameID]].teamName : ""}}<span v-html=invis()></span></li>
 
             <li>&nbsp;</li>
         </ul>
         <ul>
             <li>&nbsp;</li>
-            <div class="game game-bottom ">   {{ teams[$store.state.bracket['Winner'+games[14].gameID]] ? teams[$store.state.bracket['Winner'+games[14].gameID]].teamName : "" }}<span v-html=invis()></span></div>
+            <div class="game game-bottom teamHover">   {{ teams[$store.state.bracket['Winner'+games[14].gameID]] ? teams[$store.state.bracket['Winner'+games[14].gameID]].teamName : "" }}<span v-html=invis()></span></div>
             <li>&nbsp;</li>
         </ul>
       </main>
@@ -146,5 +146,9 @@ export default {
 
   .game-bottom {
     border-top:1px solid #aaa;
+  }
+
+  .teamHover {
+    cursor: pointer;
   }
 </style>
