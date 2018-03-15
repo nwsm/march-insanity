@@ -516,3 +516,17 @@ app.get('/ADMINS/', function (req, res) {
         console.log('Request for App Admins');
     });
 })
+
+//GET SCORES FROM MARCH 11, 2018
+app.get('/SCORES/', (req, res) => 
+{
+    const { spawn } = require('child_process');
+    const pyProg = spawn( 'python',[ path.join(__dirname, '../python/NCAAScores.py') ] );
+
+    pyProg.stdout.on('data', function(data)
+    {
+        console.log(data.toString());
+        res.write(data);
+        res.end('end');
+    });
+})
