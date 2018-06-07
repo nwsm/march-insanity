@@ -14,13 +14,13 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
 }));
 
-var connection = mysql.createConnection('mysql://t8duqyzxyq4s62rz:hyfshhrceynu8ldm@l3855uft9zao23e2.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/x0027tll75uqeyj9');
+var connection = mysql.createConnection('REDACTED');
 
 var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'luernese2018@gmail.com',
-      pass: 'lenscop2018'
+      user: 'REDACTED',
+      pass: 'REDACTED'
     }
   });
 
